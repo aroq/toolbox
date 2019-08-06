@@ -46,7 +46,7 @@ endif
 	$(eval DOCKER_RUN_ARGS += $(if $(DOCKER_ENV_VARS),$(DOCKER_ENV_VARS),))
 	$(eval DOCKER_RUN_ARGS += $(if $(DOCKER_SSH_AUTH_SOCK_FORWARD_PARAMS),$(DOCKER_SSH_AUTH_SOCK_FORWARD_PARAMS),))
 
-	docker run $(strip $(DOCKER_RUN_ARGS) $(DOCKER_RUN_VOLUMES)) $(IMAGE) /bin/bash -c '$(DOCKER_CMD)'
+	@docker run $(strip $(DOCKER_RUN_ARGS) $(DOCKER_RUN_VOLUMES)) $(IMAGE) /bin/bash -c '$(DOCKER_CMD)'
 
 #######################################
 # docker.init.forward

@@ -1,0 +1,10 @@
+#!/usr/bin/env variant
+# vi: ft=yaml
+
+description: Install the dependencies
+
+steps:
+- script: |
+    rm -fR .toolbox/tools
+    mkdir -p .toolbox/tools
+    yq r .toolbox.settings.yaml -j | jq -r '.deps | .[] | .source, .destination' | xargs -t -n2 go-getter
