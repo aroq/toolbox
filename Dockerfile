@@ -1,5 +1,7 @@
+ARG VERSION=latest
+
 FROM mikefarah/yq as yq
-FROM aroq/variant:unstable as variant
+FROM aroq/variant:$VERSION as variant
 
 FROM golang:1-alpine as builder
 

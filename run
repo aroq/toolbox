@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+# Disable the includes checking in spellcheck:
+# shellcheck disable=SC1091
+
+TASK=${1}
+
 # Load environment variables from .env file
 if [[ -f ".env" ]]; then
   source ".env"
@@ -10,4 +15,27 @@ if [[ -f ".env.local" ]]; then
   source ".env.local"
 fi
 
-exec "$@"
+# Load environment variables from .env file
+if [[ -f ".env.k6" ]]; then
+  source ".env.k6"
+fi
+
+# Load environment variables from  local git-ignored .env.local file
+if [[ -f ".env.k6.local" ]]; then
+  source ".env.k6.local"
+fi
+
+if [[ -d tools/${TASK} ]]; then
+  TOOL_PATH="tools/${TASK}/${TASK}"
+else
+  TOOL_PATH=".toolbox/tools/${TASK}/${TASK}"
+fi
+
+# Remove the first argument
+shift
+
+# Replace "=" by " " in args to make sure makefile is not trying to process them
+ARGS=$(echo "$*" | tr '=' ' ')
+
+eval "make -s ${TOOL_PATH} -- ${ARGS}"
+
