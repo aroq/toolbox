@@ -2,7 +2,6 @@
 
 # Disable the includes checking in spellcheck:
 # shellcheck disable=SC1091
-ARGS=$(echo "$*" | tr '=' ' ')
 
 # TASK=${1}
 TASK_PATH=${2}
@@ -39,11 +38,9 @@ else
 fi
 
 # Remove the first 4 arguments
-shift; shift; shift; shift;
+shift 4
 
 # Replace "=" by " " in args to make sure makefile is not trying to process them
 ARGS=$(echo "$*" | tr '=' ' ')
 
-eval "make -s ${TOOL_PATH} -- ${ARGS}"
-
-
+eval "make ${TOOL_PATH} -- ${ARGS}"
