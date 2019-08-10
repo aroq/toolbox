@@ -2,9 +2,10 @@
 
 # Disable the includes checking in spellcheck:
 # shellcheck disable=SC1091
+ARGS=$(echo "$*" | tr '=' ' ')
 
 # TASK=${1}
-PATH=${2}
+TASK_PATH=${2}
 CMD=${3}
 IMAGE=${4:-aroq/variant}
 export IMAGE
@@ -31,10 +32,10 @@ if [[ -f ".env.k6.local" ]]; then
   source ".env.k6.local"
 fi
 
-if [[ -f ${PATH}/${CMD} ]]; then
-  TOOL_PATH="${PATH}/${CMD}"
+if [[ -f ${TASK_PATH}/${CMD} ]]; then
+  TOOL_PATH="${TASK_PATH}/${CMD}"
 else
-  TOOL_PATH="${PREFIX}/${PATH}/${CMD}"
+  TOOL_PATH="${PREFIX}/${TASK_PATH}/${CMD}"
 fi
 
 # Remove the first 4 arguments
@@ -44,4 +45,5 @@ shift; shift; shift; shift;
 ARGS=$(echo "$*" | tr '=' ' ')
 
 eval "make -s ${TOOL_PATH} -- ${ARGS}"
+
 
