@@ -3,7 +3,13 @@
 # Disable the includes checking in spellcheck:
 # shellcheck disable=SC1091
 
-TASK=${1}
+# TASK=${1}
+PATH=${2}
+CMD=${3}
+IMAGE=${4:-aroq/variant}
+export IMAGE
+
+PREFIX=".toolbox"
 
 # Load environment variables from .env file
 if [[ -f ".env" ]]; then
@@ -25,14 +31,14 @@ if [[ -f ".env.k6.local" ]]; then
   source ".env.k6.local"
 fi
 
-if [[ -d tools/${TASK} ]]; then
-  TOOL_PATH="tools/${TASK}/${TASK}"
+if [[ -f ${PATH}/${CMD} ]]; then
+  TOOL_PATH="${PATH}/${CMD}"
 else
-  TOOL_PATH=".toolbox/tools/${TASK}/${TASK}"
+  TOOL_PATH="${PREFIX}/${PATH}/${CMD}"
 fi
 
-# Remove the first argument
-shift
+# Remove the first 4 arguments
+shift; shift; shift; shift;
 
 # Replace "=" by " " in args to make sure makefile is not trying to process them
 ARGS=$(echo "$*" | tr '=' ' ')

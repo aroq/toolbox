@@ -2,6 +2,7 @@ ARG VERSION=latest
 
 FROM mikefarah/yq as yq
 FROM aroq/variant:$VERSION as variant
+FROM hairyhenderson/gomplate as gomplate
 
 FROM golang:1-alpine as builder
 
@@ -20,6 +21,7 @@ FROM alpine:3.10.1
 COPY --from=yq /usr/bin/yq /usr/bin/yq
 COPY --from=variant /usr/bin/variant /usr/bin/variant
 COPY --from=builder /go/bin/go-getter /usr/bin/go-getter
+COPY --from=gomplate /gomplate /usr/bin/
 
 # Install alpine package manifest
 COPY Dockerfile.packages.txt /etc/apk/packages.txt
