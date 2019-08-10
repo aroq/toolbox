@@ -7,4 +7,4 @@ steps:
 - script: |
     rm -fR .toolbox/tools
     mkdir -p .toolbox/tools
-    yq r .toolbox.settings.yaml -j | jq -r '.deps | .[] | .source, .destination' | xargs -t -n2 go-getter
+    yq r .toolbox.settings.yaml -j | jq -r '.tools | .[] | .source, .destination' | xargs -t -n2 go-getter
