@@ -53,9 +53,9 @@ docker.run.variant.vars:
 
 	$(eval ENV_CMD = $(if $(VARIANT_ENVIRONMENT),./$(FIRST_ARG) env set $(ENVIRONMENT); ,))
 
-	$(eval IMAGE = $(shell echo "$(FIRST_ARG)_IMAGE" | tr '[:lower:]' '[:upper:]'))
-	$(eval IMAGE = $(subst /,_,$(IMAGE)))
-	$(eval IMAGE = $(subst .,_,$(IMAGE)))
+	# $(eval IMAGE = $(shell echo "$(FIRST_ARG)_IMAGE" | tr '[:lower:]' '[:upper:]'))
+	# $(eval IMAGE = $(subst /,_,$(IMAGE)))
+	# $(eval IMAGE = $(subst .,_,$(IMAGE)))
 
 	@$(MAKE) docker.run \
 		DOCKER_CMD_TITLE="Retrieve variable names from the variant file" \
