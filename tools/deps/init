@@ -7,4 +7,4 @@ steps:
 - script: |
     rm -fR .toolbox/tools
     mkdir -p .toolbox/tools
-    yq r .toolbox.settings.yaml -j | jq -r '.tools | .[] | .source, .destination' | xargs -t -n2 go-getter
+    yq r .toolbox.settings.yaml -j | jq -r '.tools | to_entries | .[] | .value.source,.value.destination' | xargs -t -n2 go-getter
