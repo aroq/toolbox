@@ -3,13 +3,11 @@
 # Disable the includes checking in spellcheck:
 # shellcheck disable=SC1091
 
-# TASK=${1}
-TASK_PATH=${2}
-CMD=${3}
-IMAGE=${4:-""}
+CMD=${1}
+IMAGE=${2:-""}
 export IMAGE
-
-PREFIX=".toolbox"
+TASK_PATH=${TASK_PATH:-tools}
+PREFIX=${PREFIX:-.toolbox}
 
 # Load environment variables from .env file
 if [[ -f ".env" ]]; then
@@ -37,9 +35,7 @@ else
   TOOL_PATH="${PREFIX}/${TASK_PATH}/${CMD}"
 fi
 
-# Remove the first 4 arguments
-shift
-shift
+# Remove the first 2 arguments
 shift
 shift
 

@@ -1,17 +1,17 @@
 #!/usr/bin/env variant
 # vi: ft=yaml
 
-description: Install the dependencies
+description: Toolbox management tasks
 
 parameters:
-  - name: TOOLBOX_DIR
-    default: .toolbox
-  - name: TOOLBOX_TOOLS_DIR
-    default: .toolbox/tools
-  - name: TOOLBOX_SETTINGS_FILE_NAME
-    default: .toolbox.settings.yaml
-  - name: TOOLBOX_EXECUTABLES_DIR
-    default: bin
+- name: TOOLBOX_DIR
+  default: .toolbox
+- name: TOOLBOX_TOOLS_DIR
+  default: .toolbox/tools
+- name: TOOLBOX_SETTINGS_FILE_NAME
+  default: .toolbox.settings.yaml
+- name: TOOLBOX_EXECUTABLES_DIR
+  default: bin
 
 tasks:
   deps:
@@ -32,5 +32,6 @@ tasks:
               jq -r '.tools | to_entries | .[] | .key' | \
               xargs -I "%" \
               sh -c "yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq '.tools.%' | gomplate -f {{ .TOOLBOX_DIR }}/core/templates/bin/run.tpl -o {{ .TOOLBOX_EXECUTABLES_DIR }}/% --context task=stdin:///foo.yml; chmod a+x {{ .TOOLBOX_EXECUTABLES_DIR }}/%"
+
 
 
