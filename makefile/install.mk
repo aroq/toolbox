@@ -6,7 +6,7 @@ export TOOLBOX_DIR ?= .toolbox
 export TOOLBOX_CORE_DIR ?= $(TOOLBOX_DIR)/core
 export TOOLBOX_PATH ?= $(shell until [ -d "$(TOOLBOX_DIR)" ] || [ "`pwd`" == '/' ]; do cd ..; done; pwd)/$(TOOLBOX_DIR)
 
-_TOOLBOX_CORE_TOOLS_DEPS_INIT_IMAGE ?= aroq/variant:unstable
+_TOOLBOX_CORE_TOOLS_DEPS_INIT_IMAGE ?= aroq/toolbox
 
 -include $(TOOLBOX_PATH)/core/makefile/Makefile
 
