@@ -24,13 +24,22 @@ ifdef PROCESS_RUN_ARGS
   $(eval $(RUN_ARGS):;@:)
 endif
 
+ifdef VARIANT
 .PHONY: $(FIRST_ARG)
 $(FIRST_ARG):
 	@$(MAKE) docker.run.variant.vars \
-		DOCKER_CMD_TITLE="Execute './$(FIRST_ARG) $(RUN_ARGS)' command in the docker container" \
+		DOCKER_CMD_TITLE="Execute './$(FIRST_ARG) $(RUN_ARGS)' variant command in the docker container" \
 		FIRST_ARG=$(firstword $(MAKECMDGOALS)) \
 		VARIANT_ENVIRONMENT=$(ENVIRONMENT) \
 		DOCKER_CMD="$(strip ./$(FIRST_ARG) $(RUN_ARGS))"
+else
+.PHONY: $(FIRST_ARG)
+$(FIRST_ARG):
+	@$(MAKE) docker.run \
+		DOCKER_CMD_TITLE="Execute './$(FIRST_ARG) $(RUN_ARGS)' command in the docker container" \
+		FIRST_ARG=$(firstword $(MAKECMDGOALS)) \
+		DOCKER_CMD="$(strip ./$(FIRST_ARG) $(RUN_ARGS))"
+endif
 endif
 
 TEMP_DIR ?= $(TOOLBOX_DIR)/.tmp
@@ -53,26 +62,23 @@ docker.run.variant.vars:
 
 	$(eval ENV_CMD = $(if $(VARIANT_ENVIRONMENT),./$(FIRST_ARG) env set $(ENVIRONMENT); ,))
 
-	# $(eval IMAGE = $(shell echo "$(FIRST_ARG)_IMAGE" | tr '[:lower:]' '[:upper:]'))
-	# $(eval IMAGE = $(subst /,_,$(IMAGE)))
-	# $(eval IMAGE = $(subst .,_,$(IMAGE)))
-
 	@$(MAKE) docker.run \
 		DOCKER_CMD_TITLE="Retrieve variable names from the variant file" \
 		IMAGE="$(VARS_RETRIEVE_IMAGE)" \
 		DOCKER_SSH_AUTH_SOCK_FORWARD_PARAMS="" \
 		DOCKER_CMD='$(BINDED_VARS_CMD) > $(BINDED_VARS_TEMP_FILE_PATH)'
-
+	
 	@$(MAKE) docker.run \
 		DOCKER_CMD_TITLE="$(DOCKER_CMD_TITLE)" \
 		DOCKER_ENV_FILE="$(VARIANT_VARS_TEMP_FILE_PATH)" \
 		DOCKER_ENV_FILE2="$(BINDED_VARS_TEMP_FILE_PATH)" \
 		DOCKER_ENV_VARS="$(DOCKER_ENV_VARS)" \
 		DOCKER_CMD="$(ENV_CMD)$(DOCKER_CMD)" \
-		IMAGE="$(${IMAGE})" \
+		IMAGE="$(IMAGE)" \
 		DOCKER_RUN_VOLUMES="$(DOCKER_RUN_VOLUMES)"
 		DOCKER_SSH_AUTH_SOCK_FORWARD_PARAMS="$(DOCKER_SSH_AUTH_SOCK_FORWARD_PARAMS)"
 
 	@rm -f $(BINDED_VARS_TEMP_FILE_PATH)
 	@rm -f $(VARIANT_VARS_TEMP_FILE_PATH)
+
 

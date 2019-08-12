@@ -6,7 +6,7 @@
 # TASK=${1}
 TASK_PATH=${2}
 CMD=${3}
-IMAGE=${4:-aroq/variant}
+IMAGE=${4:-""}
 export IMAGE
 
 PREFIX=".toolbox"
@@ -38,9 +38,12 @@ else
 fi
 
 # Remove the first 4 arguments
-shift 4
+shift
+shift
+shift
+shift
 
 # Replace "=" by " " in args to make sure makefile is not trying to process them
 ARGS=$(echo "$*" | tr '=' ' ')
-
 eval "make ${TOOL_PATH} -- ${ARGS}"
+
