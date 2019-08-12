@@ -1,17 +1,26 @@
 config:
   params:
-    prefix: .toolbox
     image: aroq:toolbox
-  tools:
+    prefix: .toolbox
+  libraries:
     k6:
       params:
-        source: github.com/aroq/toolbox-k6
+        image: aroq/toolbox-k6
         path: tools/k6
-        image: aroq/toolbox-k6:latest
-        cmd: k6
+        source: github.com/aroq/toolbox-k6
+      commands:
+        k6:
+          params:
+            cmd: k6
     cicd:
       params:
-        source: github.com/aroq/toolbox-cicd
+        image: aroq/toolbox-cicd
         path: tools/cicd
-        cmd: release
-
+        source: github.com/aroq/toolbox-cicd
+      commands:
+        deploy:
+          params:
+            cmd: deploy
+        release:
+          params:
+            cmd: release
