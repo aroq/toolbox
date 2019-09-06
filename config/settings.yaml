@@ -26,6 +26,3 @@ config:
           deploy:
             params:
               cmd: release/deploy
-
-
-
