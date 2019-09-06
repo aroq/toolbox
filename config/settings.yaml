@@ -4,6 +4,8 @@ config:
       image: aroq:toolbox
       prefix: .toolbox
       tools_dir: tools
+      env:
+        TOOLBOX_RUN_VARIANT: true
     k6:
       params:
         source: github.com/aroq/toolbox-k6
@@ -11,7 +13,7 @@ config:
       commands:
         k6:
           params:
-            cmd: k6
+            cmd: k6/k6
     cicd:
       params:
         source: github.com/aroq/toolbox-cicd
@@ -24,3 +26,6 @@ config:
           deploy:
             params:
               cmd: release/deploy
+
+
+
