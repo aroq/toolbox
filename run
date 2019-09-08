@@ -4,10 +4,23 @@
 # shellcheck disable=SC1091
 
 CMD=${1}
-IMAGE=${2:-""}
+IMAGE=${IMAGE:-$2}
 export IMAGE
-TASK_PATH=${TASK_PATH:-tools}
 PREFIX=${PREFIX:-.toolbox}
+
+echo "CMD: ${CMD}"
+
+echo "TOOLBOX_RUN: ${TOOLBOX_RUN}"
+echo "TOOLBOX_RUN_DIRECT before: ${TOOLBOX_RUN_DIRECT}"
+if [ -z ${TOOLBOX_RUN+x} ] && [ -z ${TOOLBOX_RUN_DIRECT+x} ] && [ -f /.dockerenv ]; then
+  echo "false"
+  export TOOLBOX_RUN_DIRECT=true
+else
+  export TOOLBOX_RUN_DIRECT=false
+  echo "true"
+fi
+
+echo "TOOLBOX_RUN_DIRECT after: ${TOOLBOX_RUN_DIRECT}"
 
 # Load environment variables from .env file
 if [[ -f ".env" ]]; then
@@ -29,15 +42,17 @@ if [[ -f ".env.k6.local" ]]; then
   source ".env.k6.local"
 fi
 
-if [[ -f ${TASK_PATH}/${CMD} ]]; then
-  TOOL_PATH="${TASK_PATH}/${CMD}"
+if [[ -f "${CMD}" ]]; then
+  TOOL_PATH="${CMD}"
 else
-  TOOL_PATH="${PREFIX}/${TASK_PATH}/${CMD}"
+  TOOL_PATH="${PREFIX}/${CMD}"
 fi
 
 # Remove the first 2 arguments
 shift
 shift
+
+TOOLBOX_RUN=true
 
 # Replace "=" by " " in args to make sure makefile is not trying to process them
 ARGS=$(echo "$*" | tr '=' ' ')

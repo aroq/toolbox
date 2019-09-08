@@ -6,5 +6,4 @@ export {{ $k }}={{ $v }}
 {{ end -}}
 {{- end }}
 
-eval ".toolbox/core/run {{ .task.cmd }} {{ .task.image }} $*"
-
+eval ".toolbox/core/run {{ .task.tools_dir }}/{{ .task.cmd }} {{ .task.image }} $*"

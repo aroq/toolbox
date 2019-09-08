@@ -24,22 +24,54 @@ ifdef PROCESS_RUN_ARGS
   $(eval $(RUN_ARGS):;@:)
 endif
 
-ifdef VARIANT
+
+.PHONY: $(FIRST_ARG)_before
+$(FIRST_ARG)_before::
+	@
+
 .PHONY: $(FIRST_ARG)
-$(FIRST_ARG):
+$(FIRST_ARG):: $(FIRST_ARG)_before $(FIRST_ARG)_main $(FIRST_ARG)_after
+	@
+
+.PHONY: $(FIRST_ARG)_after
+$(FIRST_ARG)_after::
+	@
+
+ifneq ($(TOOLBOX_RUN_DIRECT),true)
+
+ifeq ($(TOOLBOX_RUN_VARIANT),true)
+
+.PHONY: $(FIRST_ARG)_main
+$(FIRST_ARG)_main::
 	@$(MAKE) docker.run.variant.vars \
 		DOCKER_CMD_TITLE="Execute './$(FIRST_ARG) $(RUN_ARGS)' variant command in the docker container" \
 		FIRST_ARG=$(firstword $(MAKECMDGOALS)) \
 		VARIANT_ENVIRONMENT=$(ENVIRONMENT) \
 		DOCKER_CMD="$(strip ./$(FIRST_ARG) $(RUN_ARGS))"
 else
-.PHONY: $(FIRST_ARG)
-$(FIRST_ARG):
+.PHONY: $(FIRST_ARG)_main
+$(FIRST_ARG)_main::
 	@$(MAKE) docker.run \
 		DOCKER_CMD_TITLE="Execute './$(FIRST_ARG) $(RUN_ARGS)' command in the docker container" \
 		FIRST_ARG=$(firstword $(MAKECMDGOALS)) \
 		DOCKER_CMD="$(strip ./$(FIRST_ARG) $(RUN_ARGS))"
 endif
+
+else
+
+ifeq ($(TOOLBOX_RUN_VARIANT),true)
+
+.PHONY: $(FIRST_ARG)_main
+$(FIRST_ARG)_main::
+	$(strip $(FIRST_ARG) $(RUN_ARGS))
+else
+.PHONY: $(FIRST_ARG)_main
+$(FIRST_ARG)_main::
+	$(strip $(FIRST_ARG) $(RUN_ARGS))
+endif
+
+endif
+
 endif
 
 TEMP_DIR ?= $(TOOLBOX_DIR)/.tmp
@@ -80,5 +112,6 @@ docker.run.variant.vars:
 
 	@rm -f $(BINDED_VARS_TEMP_FILE_PATH)
 	@rm -f $(VARIANT_VARS_TEMP_FILE_PATH)
+
 
 
