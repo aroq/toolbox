@@ -22,7 +22,7 @@ config:
         release:
           build:
             params:
-              cmd: release/build
+              cmd: release/build/build
           deploy:
             params:
               cmd: release/deploy
