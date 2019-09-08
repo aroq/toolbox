@@ -17,7 +17,7 @@ config:
     cicd:
       params:
         source: github.com/aroq/toolbox-cicd
-        image: aroq/toolbox-cicd
+        image: michaeltigr/zebra-build-php-drush-docman:0.0.107
       commands:
         release:
           build:
