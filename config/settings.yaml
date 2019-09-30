@@ -4,7 +4,7 @@ config:
       prefix: .toolbox
       tools_dir: tools
       source: github.com/aroq/toolbox//tools
-      image: aroq:toolbox
+      image: aroq/toolbox
       cmd: toolbox/toolbox
       env:
         TOOLBOX_RUN_VARIANT: true
