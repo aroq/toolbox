@@ -11,18 +11,18 @@ PREFIX=${PREFIX:-.toolbox}
 # echo "CMD: ${CMD}"
 
 # echo "TOOLBOX_RUN: ${TOOLBOX_RUN}"
-# echo "TOOLBOX_RUN_DIRECT before: ${TOOLBOX_RUN_DIRECT}"
+# echo "TOOLBOX_DOCKER_SKIP before: ${TOOLBOX_DOCKER_SKIP}"
 
-if [ -z ${TOOLBOX_RUN+x} ] && [ -z ${TOOLBOX_RUN_DIRECT+x} ]; then
+if [ -z ${TOOLBOX_RUN+x} ] && [ -z ${TOOLBOX_DOCKER_SKIP+x} ]; then
   # echo "TOOLBOX_RUN & TOOLBOX_RUN_DIRECT are not provided"
   if [ -f /.dockerenv ]; then
-    echo "Inside docker already, setting TOOLBOX_RUN_DIRECT to false"
+    echo "Inside docker already, setting TOOLBOX_DOCKER_SKIP to false"
   fi
   export TOOLBOX_RUN=false
-  export TOOLBOX_RUN_DIRECT=false
+  export TOOLBOX_DOCKER_SKIP=false
 fi
 
-# echo "TOOLBOX_RUN_DIRECT after: ${TOOLBOX_RUN_DIRECT}"
+# echo "TOOLBOX_DOCKER_SKIP after: ${TOOLBOX_DOCKER_SKIP}"
 
 # Load environment variables from .env file
 if [[ -f ".env" ]]; then

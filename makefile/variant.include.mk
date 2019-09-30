@@ -37,7 +37,7 @@ $(FIRST_ARG):: $(FIRST_ARG)_before $(FIRST_ARG)_main $(FIRST_ARG)_after
 $(FIRST_ARG)_after::
 	@
 
-ifneq ($(TOOLBOX_RUN_DIRECT),true)
+ifneq ($(TOOLBOX_DOCKER_SKIP),true)
 
 ifeq ($(TOOLBOX_RUN_VARIANT),true)
 
