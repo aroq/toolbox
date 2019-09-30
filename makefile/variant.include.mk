@@ -40,7 +40,6 @@ $(FIRST_ARG)_after::
 ifneq ($(TOOLBOX_DOCKER_SKIP),true)
 
 ifeq ($(TOOLBOX_RUN_VARIANT),true)
-
 .PHONY: $(FIRST_ARG)_main
 $(FIRST_ARG)_main::
 	@$(MAKE) docker.run.variant.vars \

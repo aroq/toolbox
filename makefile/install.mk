@@ -10,15 +10,15 @@ _TOOLBOX_CORE_TOOLS_TOOLBOX_IMAGE ?= aroq/toolbox
 
 -include $(TOOLBOX_PATH)/core/makefile/Makefile
 
-.PHONY : init
 ## Init toolbox
+.PHONY : init
 init::
 	@curl -H 'Cache-Control: no-cache' --retry 5 --fail --silent --retry-delay 1 https://raw.githubusercontent.com/$(TOOLBOX_ORG)/$(TOOLBOX_PROJECT)/$(TOOLBOX_BRANCH)/bin/install.sh?$(date +%s) | \
 		bash -s "$(TOOLBOX_ORG)" "$(TOOLBOX_PROJECT)" "$(TOOLBOX_BRANCH)" "$(TOOLBOX_DIR)"
 	@$(MAKE) .toolbox/core/tools/toolbox deps install
 
-.PHONY : clean
 ## Clean toolbox
+.PHONY : clean
 clean::
 	@[ "$(TOOLBOX_PATH)" == '/' ] || \
 	 [ "$(TOOLBOX_PATH)" == '.' ] || \
