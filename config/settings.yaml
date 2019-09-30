@@ -1,15 +1,13 @@
 config:
   libraries:
     params:
-      image: aroq:toolbox
       prefix: .toolbox
       tools_dir: tools
+      source: github.com/aroq/toolbox//tools
+      image: aroq:toolbox
+      cmd: toolbox/toolbox
       env:
         TOOLBOX_RUN_VARIANT: true
-      commands:
-        test:
-          params:
-            cmd: toolbox
     k6:
       params:
         source: github.com/aroq/toolbox-k6

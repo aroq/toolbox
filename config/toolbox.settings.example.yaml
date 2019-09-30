@@ -1,0 +1,6 @@
+from:
+- /.toolbox/core/config/settings.yaml
+
+tools:
+  toolbox:
+    from: config.libraries
