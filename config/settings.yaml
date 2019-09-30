@@ -28,3 +28,6 @@ config:
           deploy:
             params:
               cmd: release/deploy
+tools:
+  toolbox:
+    from: config.libraries
