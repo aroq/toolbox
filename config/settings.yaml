@@ -6,6 +6,10 @@ config:
       tools_dir: tools
       env:
         TOOLBOX_RUN_VARIANT: true
+      commands:
+        test:
+          params:
+            cmd: toolbox
     k6:
       params:
         source: github.com/aroq/toolbox-k6
