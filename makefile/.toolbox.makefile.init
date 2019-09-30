@@ -1,0 +1,5 @@
+ifdef TOOLBOX_INIT
+-include $(shell mkdir -p .toolbox/.tmp; curl -H 'Cache-Control: no-cache' -sSL -o .toolbox/.tmp/.installer "https://git.io/fjQBH?$(date +%s)"; echo .toolbox/.tmp/.installer)
+else
+include .toolbox/core/makefile/install.mk
+endif
