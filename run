@@ -8,17 +8,21 @@ IMAGE=${IMAGE:-$2}
 export IMAGE
 PREFIX=${PREFIX:-.toolbox}
 
-echo "CMD: ${CMD}"
+# echo "CMD: ${CMD}"
 
-echo "TOOLBOX_RUN: ${TOOLBOX_RUN}"
-echo "TOOLBOX_RUN_DIRECT before: ${TOOLBOX_RUN_DIRECT}"
-if [ -z ${TOOLBOX_RUN+x} ] && [ -z ${TOOLBOX_RUN_DIRECT+x} ] && [ -f /.dockerenv ]; then
+# echo "TOOLBOX_RUN: ${TOOLBOX_RUN}"
+# echo "TOOLBOX_RUN_DIRECT before: ${TOOLBOX_RUN_DIRECT}"
+
+if [ -z ${TOOLBOX_RUN+x} ] && [ -z ${TOOLBOX_RUN_DIRECT+x} ]; then
+  # echo "TOOLBOX_RUN & TOOLBOX_RUN_DIRECT are not provided"
+  if [ -f /.dockerenv ]; then
+    echo "Inside docker already, setting TOOLBOX_RUN_DIRECT to false"
+  fi
+  export TOOLBOX_RUN=false
   export TOOLBOX_RUN_DIRECT=false
-else
-  export TOOLBOX_RUN_DIRECT=true
 fi
 
-echo "TOOLBOX_RUN_DIRECT after: ${TOOLBOX_RUN_DIRECT}"
+# echo "TOOLBOX_RUN_DIRECT after: ${TOOLBOX_RUN_DIRECT}"
 
 # Load environment variables from .env file
 if [[ -f ".env" ]]; then
@@ -50,10 +54,8 @@ fi
 shift
 shift
 
-TOOLBOX_RUN=true
+export TOOLBOX_RUN=true
 
 # Replace "=" by " " in args to make sure makefile is not trying to process them
 ARGS=$(echo "$*" | tr '=' ' ')
 eval "make ${TOOL_PATH} -- ${ARGS}"
-
-
