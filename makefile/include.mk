@@ -16,4 +16,3 @@ define colorecho
 	# @tput sgr0
 endef
 
-VARS_RETRIEVE_IMAGE ?= aroq/toolbox:0.1.1

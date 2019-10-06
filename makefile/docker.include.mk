@@ -13,11 +13,13 @@ DOCKER_RUN_VOLUMES ?=
 
 ECHO_PREFIX ?= make
 
+ifeq ($(TOOLBOX_DOCKER_SSH_FORWARD),true)
 ifeq ($(DETECTED_OS),OSX)
     # For OSX ssh-agent forwarding into Docker container - https://github.com/nardeas/ssh-agent.
     DOCKER_SSH_AUTH_SOCK_FORWARD_PARAMS ?= --volumes-from=ssh-agent -e SSH_AUTH_SOCK=/.ssh-agent/socket
 else
     DOCKER_SSH_AUTH_SOCK_FORWARD_PARAMS ?=
+endif
 endif
 
 #######################################
@@ -25,7 +27,7 @@ endif
 #######################################
 .PHONY: docker.run
 docker.run:
-ifeq ("$(DOCKER_SSH_AUTH_SOCK_FORWARD_PARAMS)","")
+ifeq ($(TOOLBOX_DOCKER_SSH_FORWARD),false)
 	@:
 else
 	@$(MAKE) docker.init.forward
@@ -60,7 +62,7 @@ endif
 .PHONY: docker.init.forward
 docker.init.forward:
 ifeq ($(DETECTED_OS),OSX)
-	@$(MAKE) docker.osx.ssh.agent
+	$(MAKE) docker.osx.ssh.agent
 endif
 
 LOCAL_SSH_ID_RSA_KEY_PATH ?= ~/.ssh
@@ -71,7 +73,4 @@ LOCAL_SSH_ID_RSA_KEY_FILE ?= id_rsa
 #######################################
 .PHONY: docker.osx.ssh.agent
 docker.osx.ssh.agent:
-	@docker ps --filter "name=ssh-agent" --format "{{.Names}}" | grep -q ssh-agent || (docker run --rm -d --name=ssh-agent nardeas/ssh-agent && docker run --rm --volumes-from=ssh-agent -v $(LOCAL_SSH_ID_RSA_KEY_PATH):/.ssh -it nardeas/ssh-agent ssh-add /root/.ssh/$(LOCAL_SSH_ID_RSA_KEY_FILE))
-
-
-
+	docker ps --filter "name=ssh-agent" --format "{{.Names}}" | grep -q ssh-agent || (docker run --rm -d --name=ssh-agent nardeas/ssh-agent && docker run --rm --volumes-from=ssh-agent -v $(LOCAL_SSH_ID_RSA_KEY_PATH):/.ssh -it nardeas/ssh-agent ssh-add /root/.ssh/$(LOCAL_SSH_ID_RSA_KEY_FILE))

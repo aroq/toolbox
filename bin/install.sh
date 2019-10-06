@@ -2,6 +2,8 @@
 
 # Idea of the install implementation is taken from https://github.com/cloudposse/build-harness/
 
+export TOOLBOX_DOCKER_SSH_FORWARD=${1:-false}
+
 export TOOLBOX_ORG=${1:-aroq}
 export TOOLBOX_PROJECT=${2:-toolbox}
 export TOOLBOX_BRANCH=${3:-master}
@@ -20,3 +22,4 @@ mkdir -p "${TOOLBOX_DIR}"
 CLONE_CMD="git clone --quiet -b ${TOOLBOX_BRANCH} ${GITHUB_REPO} ${TOOLBOX_CORE_DIR} &> /dev/null"
 echo "Executing: ${CLONE_CMD}"
 eval "${CLONE_CMD}"
+
