@@ -3,12 +3,14 @@ config:
     params:
       prefix: .toolbox
       tools_dir: tools
-      source: github.com/aroq/toolbox//tools
-      image: aroq/toolbox:dev
-      cmd: toolbox/toolbox
+      image: aroq/toolbox
       env:
         TOOLBOX_RUN_VARIANT: true
         TOOLBOX_DOCKER_SSH_FORWARD: false
+    toolbox:
+      params:
+        source: github.com/aroq/toolbox//tools
+        cmd: toolbox/toolbox
     k6:
       params:
         source: github.com/aroq/toolbox-k6
@@ -21,6 +23,8 @@ config:
       params:
         source: github.com/aroq/toolbox-cicd
         image: aroq/variant-cicd
+        env:
+          TOOLBOX_DOCKER_SSH_FORWARD: true
       commands:
         release:
           build:
@@ -31,4 +35,4 @@ config:
               cmd: release/deploy
 tools:
   toolbox:
-    from: config.libraries
+    from: config.libraries.toolbox
