@@ -8,6 +8,7 @@ config:
       cmd: toolbox/toolbox
       env:
         TOOLBOX_RUN_VARIANT: true
+        TOOLBOX_DOCKER_SSH_FORWARD: false
     k6:
       params:
         source: github.com/aroq/toolbox-k6
