@@ -1,5 +1,5 @@
 ARG VARIANT_VERSION=latest
-ARG UNICONF_VERSION=0.1.5
+ARG UNICONF_VERSION=dev
 
 FROM mikefarah/yq as yq
 FROM aroq/variant:$VARIANT_VERSION as variant
