@@ -1,12 +1,15 @@
-ARG VARIANT_VERSION=latest
-ARG UNICONF_VERSION=dev
+ARG VARIANT_VERSION=0.35.1
+ARG UNICONF_VERSION=0.1.6
+ARG GOMPLATE_VERSION=v3.5.0
+ARG YQ_VERSION=2.4.0
 
-FROM mikefarah/yq as yq
 FROM aroq/variant:$VARIANT_VERSION as variant
 FROM aroq/uniconf:$UNICONF_VERSION as uniconf
-# Self-reference:
+FROM hairyhenderson/gomplate:$GOMPLATE_VERSION as gomplate
+FROM mikefarah/yq:$YQ_VERSION as yq
+
+# Self-reference to avoid rebuilding on each build:
 FROM aroq/toolbox:latest as toolbox
-FROM hairyhenderson/gomplate as gomplate
 
 FROM golang:1-alpine as builder
 
