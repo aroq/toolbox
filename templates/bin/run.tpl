@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+if [ "${TOOLBOX_DEBUG}" == "true" ]; then
+  set -x
+fi
+
 {{ if has .task "env" -}}
 {{- range $k, $v := .task.env -}}
 export {{ $k }}=${ {{- $k }}:-{{ $v }}}

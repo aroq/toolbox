@@ -33,7 +33,7 @@ else
 	@$(MAKE) docker.init.forward
 endif
 
-ifneq ("$(TOOLBOX_DEBUG)","")
+ifeq ("$(TOOLBOX_DEBUG)",true)
 ifeq ("$(DOCKER_CMD_TITLE)","")
 	@:
 else

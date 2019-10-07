@@ -3,6 +3,10 @@
 # Disable the includes checking in spellcheck:
 # shellcheck disable=SC1091
 
+if [ "${TOOLBOX_DEBUG}" == "true" ]; then
+  set -x
+fi
+
 CMD=${1}
 export TOOLBOX_TOOL_DOCKER_IMAGE=${TOOLBOX_TOOL_DOCKER_IMAGE:-$2}
 PREFIX=${PREFIX:-.toolbox}
@@ -56,4 +60,5 @@ export TOOLBOX_RUN=true
 
 # Replace "=" by " " in args to make sure makefile is not trying to process them
 ARGS=$(echo "$*" | tr '=' ' ')
+
 eval "make ${TOOL_PATH} -- ${ARGS}"
