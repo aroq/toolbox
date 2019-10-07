@@ -1,3 +1,12 @@
+Version 0.1.2:
+ - Update tools versions
+ - Fix SSH FORWARD for docker
+ - Add TOOLBOX_DOCKER_SSH_FORWARD env var
+ - Switch to aroq/toolbox:dev version
+ - Change toolbox image to aroq/toolbox:0.1.1
+ - Change vars retrieve image to aroq/toolbox:0.1.1
+ - Change vars retrieve image to aroq/toolbox:0.1.4
+
 Version 0.1.1:
 
 
