@@ -1,5 +1,5 @@
 config:
-  libraries:
+  tools:
     params:
       prefix: .toolbox
       tools_dir: tools
@@ -10,7 +10,10 @@ config:
     toolbox:
       params:
         source: github.com/aroq/toolbox//tools
-        cmd: toolbox/toolbox
+        commands:
+          toolbox:
+            params:
+              cmd: toolbox/toolbox
     k6:
       params:
         source: github.com/aroq/toolbox-k6
@@ -35,4 +38,4 @@ config:
               cmd: release/deploy
 tools:
   toolbox:
-    from: config.libraries.toolbox
+    from: config.tools.toolbox
