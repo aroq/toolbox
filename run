@@ -4,8 +4,7 @@
 # shellcheck disable=SC1091
 
 CMD=${1}
-IMAGE=${IMAGE:-$2}
-export IMAGE
+export TOOLBOX_TOOL_DOCKER_IMAGE=${TOOLBOX_TOOL_DOCKER_IMAGE:-$2}
 PREFIX=${PREFIX:-.toolbox}
 
 # echo "CMD: ${CMD}"
@@ -50,8 +49,7 @@ else
   TOOL_PATH="${PREFIX}/${CMD}"
 fi
 
-# Remove the first 2 arguments
-shift
+# Remove the first argument
 shift
 
 export TOOLBOX_RUN=true

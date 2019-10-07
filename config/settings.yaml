@@ -10,10 +10,10 @@ config:
     toolbox:
       params:
         source: github.com/aroq/toolbox//tools
-        commands:
-          toolbox:
-            params:
-              cmd: toolbox/toolbox
+      commands:
+        toolbox:
+          params:
+            cmd: toolbox/toolbox
     k6:
       params:
         source: github.com/aroq/toolbox-k6
@@ -38,4 +38,4 @@ config:
               cmd: release/deploy
 tools:
   toolbox:
-    from: config.tools.toolbox
+    from: config.tools.toolbox.commands.toolbox

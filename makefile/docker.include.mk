@@ -52,9 +52,9 @@ endif
 	$(eval ARG_IMAGE = $(subst /,_,$(ARG_IMAGE)))
 	$(eval ARG_IMAGE = $(subst .,_,$(ARG_IMAGE)))
 
-	$(eval IMAGE = $(if $(IMAGE),$(IMAGE),$(${ARG_IMAGE})))
+	$(eval TOOLBOX_TOOL_DOCKER_IMAGE = $(if $(TOOLBOX_TOOL_DOCKER_IMAGE),$(TOOLBOX_TOOL_DOCKER_IMAGE),$(${ARG_IMAGE})))
 
-	docker run $(strip $(DOCKER_RUN_ARGS) $(DOCKER_RUN_VOLUMES)) $(IMAGE) sh -c '$(DOCKER_CMD)'
+	docker run $(strip $(DOCKER_RUN_ARGS) $(DOCKER_RUN_VOLUMES)) $(TOOLBOX_TOOL_DOCKER_IMAGE) sh -c '$(DOCKER_CMD)'
 
 #######################################
 # docker.init.forward
