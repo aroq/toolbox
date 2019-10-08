@@ -10,7 +10,6 @@ export TOOLBOX_DOCKER_IMAGE_VERSION ?= $(shell if [ -f .toolbox/core/VERSION ]; 
 
 export _TOOLBOX_CORE_TOOLS_TOOLBOX_IMAGE ?= aroq/toolbox:$(TOOLBOX_DOCKER_IMAGE_VERSION)
 export VARS_RETRIEVE_IMAGE ?= aroq/toolbox:$(TOOLBOX_DOCKER_IMAGE_VERSION)
-
 export TOOLBOX_DOCKER_SSH_FORWARD ?= false
 
 -include $(TOOLBOX_PATH)/core/makefile/Makefile

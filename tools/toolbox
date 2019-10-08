@@ -20,9 +20,9 @@ tasks:
         echo "test"
   initialize:
     steps:
-      - task: deps.install
+      - task: tools.install
       - task: cmd.create
-  deps:
+  tools:
     tasks:
       install:
         steps:
@@ -33,6 +33,13 @@ tasks:
             uniconf -c {{ .TOOLBOX_SETTINGS_FILE_NAME }} > {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }}
 
             yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq -r '.tools | to_entries | unique_by(.value.source) | .[] | select(.value.source != null) | @text "\(.value.source) \(.value.prefix)/\(.value.tools_dir)/\(.key)"' | xargs -n2 go-getter
+
+      list:
+        steps:
+        - script: |
+            uniconf -c {{ .TOOLBOX_SETTINGS_FILE_NAME }} > {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }}
+
+            yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq -r '.tools | to_entries | unique_by(.value.source) | .[] | select(.value.source != null) | @text "\(.value.source) \(.value.prefix)/\(.value.tools_dir)/\(.key)"'
 
   cmd:
     tasks:
