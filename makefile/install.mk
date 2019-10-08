@@ -20,7 +20,7 @@ export TOOLBOX_DOCKER_SSH_FORWARD ?= false
 init::
 	@curl -H 'Cache-Control: no-cache' --retry 5 --fail --silent --retry-delay 1 https://raw.githubusercontent.com/$(TOOLBOX_ORG)/$(TOOLBOX_PROJECT)/$(TOOLBOX_BRANCH)/bin/install.sh?$(date +%s) | \
 		bash -s "$(TOOLBOX_ORG)" "$(TOOLBOX_PROJECT)" "$(TOOLBOX_BRANCH)" "$(TOOLBOX_DIR)"
-	@$(MAKE) .toolbox/core/tools/toolbox deps install
+	@$(MAKE) .toolbox/core/tools/toolbox initialize
 
 ## Clean toolbox
 .PHONY : clean
