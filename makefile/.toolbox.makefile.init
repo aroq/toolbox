@@ -1,6 +1,11 @@
 ifdef TOOLBOX_INIT
+
 TOOLBOX_DOCKER_SSH_FORWARD ?= false
--include $(shell mkdir -p .toolbox/.tmp; curl -H 'Cache-Control: no-cache' -sSL -o .toolbox/.tmp/.installer "https://git.io/fjQBH?$(date +%s)"; echo .toolbox/.tmp/.installer)
+TOOLBOX_BRANCH ?= master
+
+-include $(shell mkdir -p .toolbox/.tmp; curl -H 'Cache-Control: no-cache' -sSL -o .toolbox/.tmp/.installer "https://raw.githubusercontent.com/aroq/toolbox/$(TOOLBOX_BRANCH)/makefile/install.mk?$(date +%s)"; echo .toolbox/.tmp/.installer)
+
 else
 include .toolbox/core/makefile/install.mk
 endif
+
