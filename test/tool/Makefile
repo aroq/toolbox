@@ -1,4 +1,4 @@
-export TOOLBOX_BRANCH ?= dev
-export TOOLBOX_DOCKER_IMAGE_VERSION ?= dev
+#export TOOLBOX_BRANCH ?= master
+#export TOOLBOX_DOCKER_IMAGE_VERSION ?= latest
 
 include .toolbox.makefile.init
