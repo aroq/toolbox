@@ -1,0 +1,22 @@
+sources:
+  toolbox: github.com/aroq/toolbox//config?ref=dev
+  toolbox-k6: github.com/aroq/toolbox-k6//config?ref=master
+
+from:
+  - toolbox:settings.yaml
+  - toolbox-k6:settings.yaml
+
+config:
+  tools:
+    params:
+      image: aroq/toolbox:dev
+    toolbox:
+      params:
+        source: github.com/aroq/toolbox//tools?ref=dev
+
+tools:
+  test:
+    from: config.tools
+    cmd: test
+
+
