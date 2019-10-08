@@ -1,11 +1,26 @@
 ## Usage
 
-1. Download the installer inside your project with the following command:
-```
-curl https://raw.githubusercontent.com/aroq/toolbox/master/makefile/.toolbox.makefile.init --output .toolbox.makefile.init
-```
-2. Include ```.toolbox.makefile.init``` into your Makefile:
-```
-include .toolbox.makefile.init
+### Sample project
+
+1. Get sample project files:
+```docker run --rm -t -v "$(pwd)":"$(pwd)" -w "$(pwd)" aroq/toolbox:dev /bin/bash -c "go-getter github.com/aroq/toolbox//test/tool?ref=dev temp"
 ```
 
+2. Go into new project directory:
+```
+cd temp
+```
+
+3. Init toolbox:
+```
+TOOLBOX_INIT="1" make init
+```
+
+4. Try commands:
+```
+bin/test
+```
+
+```
+K6_HOSTNAME="github.com" bin/k6 --k6-iterations=3
+```
