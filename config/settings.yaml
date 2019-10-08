@@ -14,14 +14,6 @@ config:
         toolbox:
           params:
             cmd: toolbox/toolbox
-    k6:
-      params:
-        source: github.com/aroq/toolbox-k6
-        image: aroq/toolbox-k6
-      commands:
-        k6:
-          params:
-            cmd: k6/k6
     cicd:
       params:
         source: github.com/aroq/toolbox-cicd
