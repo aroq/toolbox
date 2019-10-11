@@ -9,6 +9,7 @@ config:
         TOOLBOX_DOCKER_SSH_FORWARD: false
     toolbox:
       params:
+        name: toolbox
         source: github.com/aroq/toolbox//tools
       commands:
         toolbox:
@@ -16,6 +17,7 @@ config:
             cmd: toolbox/toolbox
     cicd:
       params:
+        name: cicd
         source: github.com/aroq/toolbox-cicd
         image: aroq/variant-cicd
         env:
