@@ -7,3 +7,4 @@ rsync
 jq
 bash
 openssh-client
+gawk

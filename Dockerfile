@@ -27,3 +27,7 @@ COPY --from=toolbox /usr/bin/go-getter /usr/bin
 # Install alpine package manifest
 COPY Dockerfile.packages.txt /etc/apk/packages.txt
 RUN apk add --no-cache --update $(grep -v '^#' /etc/apk/packages.txt)
+
+# Add git-secret package from edge testing
+RUN apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing git-secret
+
