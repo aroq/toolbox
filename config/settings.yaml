@@ -1,5 +1,5 @@
 config:
-  tools:
+  libraries:
     params:
       prefix: .toolbox
       tools_dir: tools
@@ -30,4 +30,4 @@ config:
               cmd: release/deploy
 tools:
   toolbox:
-    from: config.tools.toolbox.commands.toolbox
+    from: config.libraries.toolbox.commands.toolbox
