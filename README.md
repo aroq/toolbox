@@ -4,7 +4,7 @@
 
 1. Get sample project files:
 ```
-docker run --rm -t -v "$(pwd)":"$(pwd)" -w "$(pwd)" aroq/toolbox:dev /bin/bash -c "go-getter github.com/aroq/toolbox//test/tool?ref=dev temp"
+docker run --rm -t -v "$(pwd)":"$(pwd)" -w "$(pwd)" aroq/toolbox sh -c "go-getter github.com/aroq/toolbox//test/tool temp"
 ```
 
 2. Go into new project directory:

@@ -18,11 +18,12 @@ PREFIX=${PREFIX:-.toolbox}
 
 if [ -z ${TOOLBOX_RUN+x} ] && [ -z ${TOOLBOX_DOCKER_SKIP+x} ]; then
   # echo "TOOLBOX_RUN & TOOLBOX_RUN_DIRECT are not provided"
-  if [ -f /.dockerenv ]; then
-    echo "Inside docker already, setting TOOLBOX_DOCKER_SKIP to false"
-  fi
   export TOOLBOX_RUN=false
   export TOOLBOX_DOCKER_SKIP=false
+  if [ -f /.dockerenv ]; then
+    echo "Inside docker already, setting TOOLBOX_DOCKER_SKIP to true"
+    export TOOLBOX_DOCKER_SKIP=true
+  fi
 fi
 
 # echo "TOOLBOX_DOCKER_SKIP after: ${TOOLBOX_DOCKER_SKIP}"
@@ -62,3 +63,4 @@ export TOOLBOX_RUN=true
 ARGS=$(echo "$*" | tr '=' ' ')
 
 eval "make ${TOOL_PATH} -- ${ARGS}"
+
