@@ -2,18 +2,6 @@ tasks:
   exec:
     interactive: true
     parameters:
-    - name: ssh.server.project_root_dir
-      type: string
-      default: ""
-    - name: ssh.server.project_subdirectory
-      type: string
-      default: ""
-    - name: ssh.server.user
-      type: string
-      default: ""
-    - name: ssh.server.host
-      type: string
-      default: ""
     - name: exec_dir
       type: string
       default: ""
@@ -28,22 +16,17 @@ tasks:
       default: "pwd"
     - name: mode
       type: string
-      default: local_current_dir
-    - name: sudo_user
-      type: string
-      default: ""
-    - name: verbose
-      type: string
-      default: "true"
+      default: default
     - name: flags
       type: string
       default: ""
     steps:
     - script: |
-        echo "test"
-        if [ "{{ .mode }}" = "local_current_dir" ]; then
-          echo "test"
+        if [ "{{ .mode }}" = "default" ]; then
+          CMD={{ list .flags .cmd | join " " | trimSuffix "\n" | trim | quote | replace "\\n" "\n" }}
+          echo -e "\033[0;32m${CMD}\033[0m"
           set -e;
           {{list .flags .cmd | join " "}}
         fi
+
 
