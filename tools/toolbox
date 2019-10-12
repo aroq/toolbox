@@ -27,21 +27,17 @@ tasks:
         - task: exec
           arguments:
             cmd: |
-              rm -fR {{ .TOOLBOX_TOOLS_DIR }}
-              mkdir -p {{ .TOOLBOX_TOOLS_DIR }}
-
-              uniconf -c {{ .TOOLBOX_SETTINGS_FILE_NAME }} > {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }}
-
-              yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq -r '.tools | to_entries | unique_by(.value.destination) | .[] | select(.value.source != null) | @text "\(.value.source) \(.value.prefix)/\(.value.tools_dir)/\(.value.destination)"' | xargs -n2 go-getter
-
+              rm -fR {{ .TOOLBOX_TOOLS_DIR }};
+              mkdir -p {{ .TOOLBOX_TOOLS_DIR }};
+              uniconf -c {{ .TOOLBOX_SETTINGS_FILE_NAME }} > {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }};
+              yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq -r '.tools | to_entries | unique_by(.value.destination) | .[] | select(.value.source != null) | @text "\(.value.source) \(.value.prefix)/\(.value.tools_dir)/\(.value.destination)"' | xargs -n2 go-getter;
         list:
           steps:
           - task: exec
             arguments:
               cmd: |
-                uniconf -c {{ .TOOLBOX_SETTINGS_FILE_NAME }} > {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }}
-
-                yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq -r '.tools | to_entries | .[] | @text "\(.value.source) \(.value.prefix)/\(.value.tools_dir)/\(.value.destination)"'
+                uniconf -c {{ .TOOLBOX_SETTINGS_FILE_NAME }} > {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }};
+                yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq -r '.tools | to_entries | .[] | @text "\(.value.source) \(.value.prefix)/\(.value.tools_dir)/\(.value.destination)"';
 
   cmd:
     tasks:
@@ -50,21 +46,21 @@ tasks:
         - task: exec
           arguments:
             cmd: |
-              mkdir -p {{ .TOOLBOX_EXECUTABLES_DIR }}
+              mkdir -p {{ .TOOLBOX_EXECUTABLES_DIR }};
               yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | \
                 jq -r '.tools | to_entries | .[] | .key' | \
                 xargs -I "%" \
-                sh -c "yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq '.tools.%' | gomplate -f {{ .TOOLBOX_DIR }}/core/templates/bin/run.tpl -o {{ .TOOLBOX_EXECUTABLES_DIR }}/% --context task=stdin:///foo.yml; chmod a+x {{ .TOOLBOX_EXECUTABLES_DIR }}/%"
+                sh -c "yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq '.tools.%' | gomplate -f {{ .TOOLBOX_DIR }}/core/templates/bin/run.tpl -o {{ .TOOLBOX_EXECUTABLES_DIR }}/% --context task=stdin:///foo.yml; chmod a+x {{ .TOOLBOX_EXECUTABLES_DIR }}/%";
 
       list:
         steps:
         - task: exec
           arguments:
             cmd: |
-              mkdir -p {{ .TOOLBOX_EXECUTABLES_DIR }}
+              mkdir -p {{ .TOOLBOX_EXECUTABLES_DIR }};
               yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | \
                 jq -r '.tools | to_entries | .[] | .key' | \
                 xargs -I "%" \
-                sh -c "yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq '.tools.%'"
+                sh -c "yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq '.tools.%'";
 
 
