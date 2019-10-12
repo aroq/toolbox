@@ -1,30 +1,28 @@
 #!/usr/bin/env variant
 # vi: ft=yaml
 
+import: .toolbox/core/variant-lib/utils.yaml
+
 description: Templates management tasks
 
-# parameters:
-# - name: TOOLBOX_DIR
-  # default: .toolbox
-# - name: TOOLBOX_TOOLS_DIR
-  # default: .toolbox/tools
-# - name: TOOLBOX_SETTINGS_FILE_NAME
-  # default: .toolbox.settings.yaml
-# - name: TOOLBOX_EXECUTABLES_DIR
-  # default: bin
+parameters:
+- name: TOOLBOX_CONFIG_DIR
+  default: config
+- name: TOOLBOX_CONFIG_DEFINES_FILE_PATH
+  default: config/defines.yaml
+- name: TOOLBOX_CONFIG_TEMPLATES_DIR
+  default: config/templates
+- name: TOOLBOX_CONFIG_RENDERED_DIR
+  default: config/rendered
 
 tasks:
-  test:
+  render:
     steps:
-    - script: |
-        echo "test"
-  # initialize:
-    # steps:
-      # - task: tools.install
-      # - task: cmd.create
-  # tools:
-    # tasks:
-      # install:
-        # steps:
-        # - script: |
-            # echo "test"
+    - task: exec
+      arguments:
+        cmd: |
+          gomplate -d defines={{ .TOOLBOX_CONFIG_DEFINES_FILE_PATH }} \
+          --input-dir={{ .TOOLBOX_CONFIG_TEMPLATES_DIR }} \
+          --output-dir={{ .TOOLBOX_CONFIG_RENDERED_DIR }}
+
+
