@@ -15,6 +15,9 @@ config:
         toolbox:
           params:
             cmd: toolbox/toolbox
+        template:
+          params:
+            cmd: toolbox/template
     cicd:
       params:
         destination: cicd
@@ -33,3 +36,5 @@ config:
 tools:
   toolbox:
     from: config.libraries.toolbox.commands.toolbox
+  template:
+    from: config.libraries.toolbox.commands.template
