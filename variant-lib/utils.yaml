@@ -10,7 +10,7 @@ tasks:
       default: ""
     - name: title
       type: string
-      default: ""
+      default: "CMD"
     - name: cmd
       type: string
       default: "pwd"
@@ -20,10 +20,18 @@ tasks:
     - name: flags
       type: string
       default: ""
+    - name: verbose
+      type: string
+      default: "true"
     steps:
     - script: |
         if [ "{{ .mode }}" = "default" ]; then
           CMD={{ list .flags .cmd | join " " | trimSuffix "\n" | trim | quote | replace "\\n" "\n" }}
+
+          if [ "{{.verbose}}" = "true" ]; then
+            printf "%s\e[34m---> {{ .title }} :: Executing command: \e[0m\n"
+          fi
+
           echo -e "\033[0;32m${CMD}\033[0m"
           set -e;
           {{list .flags .cmd | join " "}}
