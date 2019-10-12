@@ -1,0 +1,91 @@
+tasks:
+  exec:
+    interactive: true
+    parameters:
+    - name: ssh.server.project_root_dir
+      type: string
+      default: ""
+    - name: ssh.server.project_subdirectory
+      type: string
+      default: ""
+    - name: ssh.server.user
+      type: string
+      default: ""
+    - name: ssh.server.host
+      type: string
+      default: ""
+    - name: exec_dir
+      type: string
+      default: ""
+    - name: subdir
+      type: string
+      default: ""
+    - name: title
+      type: string
+      default: ""
+    - name: cmd
+      type: string
+      default: "pwd"
+    - name: mode
+      type: string
+      default: local_current_dir
+    - name: sudo_user
+      type: string
+      default: ""
+    - name: verbose
+      type: string
+      default: "true"
+    - name: flags
+      type: string
+      default: ""
+    steps:
+    - script: |
+        cmd_info () {
+          CMD={{list .flags .cmd | join " " | trimSuffix "\n" | quote | replace "\\n" "\n" }}
+          CMD_TITLE=${1}
+          CMD_DIR=${2:-"$(pwd)"}
+          CMD_SSH_HOST=${3:-}
+          CMD_SUDO_USER=${4:-}
+          if [ -z "${CMD_SSH_HOST}" ]; then
+            CMD_SSH_HOST_MESSAGE=''
+          else
+            CMD_SSH_HOST_MESSAGE=" through SSH on the remote host ${CMD_SSH_HOST}"
+          fi
+          if [ -z "${CMD_SUDO_USER}" ]; then
+            CMD_SUDO_USER_MESSAGE=''
+          else
+            CMD_SUDO_USER_MESSAGE=" as a sudo user \"${CMD_SUDO_USER}\""
+          fi
+          if [ "{{.verbose}}" = "true" ]; then
+            printf "%s\e[34m---> ${CMD_TITLE} :: Executing command in the directory ${CMD_DIR}${CMD_SSH_HOST_MESSAGE}${CMD_SUDO_USER_MESSAGE} (mode={{.mode}}): \e[0m\n"
+          fi
+          echo -e "\033[0;32m${CMD}\033[0m"
+        }
+        if [ "{{ .mode }}" = "ssh" ]; then
+          cmd_info "{{.title}}" "{{.exec_dir}}/{{.subdir}}" "{{.ssh.server.user}}@{{.ssh.server.host}}"
+          ssh -T {{.ssh.server.user}}@{{.ssh.server.host}} "set -e; cd {{.exec_dir}}/{{.subdir}}; {{.cmd | escapeDoubleQuotes | trimSuffix "\n"}}"
+        elif [ "{{ .mode }}" = "ssh_sudo" ]; then
+          cmd_info "${{.title}}" "{{.exec_dir}}/{{.subdir}}" "{{.ssh.server.user}}@{{.ssh.server.host}}" "{{.sudo_user}}"
+          ssh -T {{.ssh.server.user}}@{{.ssh.server.host}} 'sudo -u {{.sudo_user}} bash -c "set -e; cd {{.exec_dir}}/{{.subdir}}; {{.cmd | escapeDoubleQuotes | trimSuffix "\n"}}"'
+        elif [ "{{ .mode }}" = "local_current_dir" ]; then
+          cmd_info "{{.title}}"
+          set -e;
+          {{list .flags .cmd | join " "}}
+        elif [ "{{ .mode }}" = "local" ]; then
+          cmd_info "{{.title}}" "{{.exec_dir}}/{{.subdir}}"
+          set -e;
+          cd {{.exec_dir}}/{{.subdir}};
+          {{list .flags .cmd | join " "}}
+        elif [ "{{ .mode }}" = "gitlab_docker" ]; then
+          cmd_info "{{.title}}" "{{.exec_dir}}/{{.subdir}}"
+          set -e;
+          cd {{.exec_dir}}/{{.subdir}};
+          {{list .flags .cmd | join " "}}
+        elif [ "{{ .mode }}" = "gitlab_shell" ]; then
+          cmd_info "{{.title}}" "{{.exec_dir}}/{{.subdir}}"
+          set -e;
+          cd {{.exec_dir}}/{{.subdir}};
+          {{list .flags .cmd | join " "}}
+        else
+          printf "\e[31mexec mode is not defined properly\e[0m\n"
+        fi
