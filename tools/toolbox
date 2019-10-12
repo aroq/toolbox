@@ -26,6 +26,7 @@ tasks:
         steps:
         - task: exec
           arguments:
+            title: Install tools
             cmd: |
               rm -fR {{ .TOOLBOX_TOOLS_DIR }};
               mkdir -p {{ .TOOLBOX_TOOLS_DIR }};
