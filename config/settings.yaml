@@ -18,6 +18,9 @@ config:
         template:
           params:
             cmd: toolbox/template
+        uniconf:
+          params:
+            cmd: toolbox/uniconf
     cicd:
       params:
         destination: cicd
@@ -38,3 +41,5 @@ tools:
     from: config.libraries.toolbox.commands.toolbox
   template:
     from: config.libraries.toolbox.commands.template
+  uniconf:
+    from: config.libraries.toolbox.commands.uniconf
