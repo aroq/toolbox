@@ -1,0 +1,30 @@
+#!/usr/bin/env variant
+# vi: ft=yaml
+
+description: Templates management tasks
+
+# parameters:
+# - name: TOOLBOX_DIR
+  # default: .toolbox
+# - name: TOOLBOX_TOOLS_DIR
+  # default: .toolbox/tools
+# - name: TOOLBOX_SETTINGS_FILE_NAME
+  # default: .toolbox.settings.yaml
+# - name: TOOLBOX_EXECUTABLES_DIR
+  # default: bin
+
+tasks:
+  test:
+    steps:
+    - script: |
+        echo "test"
+  # initialize:
+    # steps:
+      # - task: tools.install
+      # - task: cmd.create
+  # tools:
+    # tasks:
+      # install:
+        # steps:
+        # - script: |
+            # echo "test"
