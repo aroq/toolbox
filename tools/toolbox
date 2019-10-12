@@ -33,7 +33,7 @@ tasks:
               uniconf -c {{ .TOOLBOX_SETTINGS_FILE_NAME }} > {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }};
               yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq -r '.tools | to_entries | unique_by(.value.destination) | .[] | select(.value.source != null) | @text "\(.value.source) \(.value.prefix)/\(.value.tools_dir)/\(.value.destination)"' | xargs -n2 go-getter;
 
-              yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq -r '.tools | to_entries | unique_by(.value.destination) | .[] | select(.value.source != null) | .value.prefix)\/.value.tools_dir/\.value.destination"' | \
+              yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq -r '.tools | to_entries | unique_by(.value.destination) | .[] | select(.value.source != null) | @text "\(.value.prefix)/\(.value.tools_dir)/\(.value.destination)"' | \
                 xargs -I "%" \
                   sh -c "cd %; git rev-parse --short HEAD > REVISION; rm -fR .git";
 
@@ -68,5 +68,6 @@ tasks:
                 jq -r '.tools | to_entries | .[] | .key' | \
                 xargs -I "%" \
                 sh -c "yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq '.tools.%'";
+
 
 
