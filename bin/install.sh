@@ -23,3 +23,10 @@ CLONE_CMD="git clone --quiet -b ${TOOLBOX_BRANCH} ${GITHUB_REPO} ${TOOLBOX_CORE_
 echo "Executing: ${CLONE_CMD}"
 eval "${CLONE_CMD}"
 
+(
+cd "${TOOLBOX_CORE_DIR}" || exit
+git rev-parse --short HEAD > REVISION
+rm -fR .git
+)
+
+
