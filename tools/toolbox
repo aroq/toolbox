@@ -67,7 +67,7 @@ tasks:
               # Remove and recreate bin dir
               mkdir -p {{ .TOOLBOX_EXECUTABLES_DIR }};
 
-              # Create bin/* tool executable scripts
+              # Create "bin/*" tool executable scripts
               yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | \
                 jq -r '.tools | to_entries | .[] | .key' | \
                 xargs -I "%" \
@@ -78,11 +78,9 @@ tasks:
         - task: exec
           arguments:
             cmd: |
-              # List bin/* executable script
+              # List "bin/*" tool executable scripts
               yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | \
-                jq -r '.tools | to_entries | .[] | .key' | \
-                xargs -I "%" \
-                sh -c "yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq '.tools.%'";
+                jq -r '.tools'
 
 
 
