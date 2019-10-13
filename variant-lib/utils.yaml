@@ -38,6 +38,30 @@ tasks:
           {{list .flags .cmd | join " "}}
         fi
 
-
-
+  git-secret:
+    parameters:
+    - name: secret_file
+      type: string
+    tasks:
+      hide:
+        steps:
+        - task: exec
+          arguments:
+            title: "Git secret :: Hide secret"
+            cmd: |
+              git secret hide {{ .secret_file }}
+      reveal:
+        steps:
+        - task: exec
+          arguments:
+            title: "Git secret :: Reveal secret"
+            cmd: |
+              git secret reveal -f {{ .secret_file }}
+      delete:
+        steps:
+        - task: exec
+          arguments:
+            title: "Git secret :: Remove secret file"
+            cmd: |
+              rm {{ .secret_file }}
 
