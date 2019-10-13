@@ -46,16 +46,16 @@ tasks:
               # Remove tmp dir
               rm -fR .unipipe_temp;
 
-        list:
-          steps:
-          - task: exec
-            arguments:
-              cmd: |
-                # Process config
-                uniconf -c {{ .TOOLBOX_SETTINGS_FILE_NAME }} > {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }};
+      list:
+        steps:
+        - task: exec
+          arguments:
+            cmd: |
+              # Process config
+              uniconf -c {{ .TOOLBOX_SETTINGS_FILE_NAME }} > {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }};
 
-                # List tools
-                yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq -r '.tools | to_entries | .[] | @text "\(.value.source) \(.value.prefix)/\(.value.tools_dir)/\(.value.destination)"';
+              # List tools
+              yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq -r '.tools | to_entries | .[] | @text "\(.value.source) \(.value.prefix)/\(.value.tools_dir)/\(.value.destination)"';
 
   cmd:
     tasks:
