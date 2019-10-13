@@ -35,7 +35,7 @@ tasks:
 
               yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq -r '.tools | to_entries | unique_by(.value.destination) | .[] | select(.value.source != null) | @text "\(.value.prefix)/\(.value.tools_dir)/\(.value.destination)"' | \
                 xargs -I "%" \
-                  sh -c "cd %; git rev-parse --short HEAD > REVISION; rm -fR .git";
+                  sh -c "cd %; [ -d .git ] && (git rev-parse --short HEAD > REVISION; rm -fR .git)";
 
         list:
           steps:
