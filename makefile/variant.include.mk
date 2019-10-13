@@ -88,6 +88,7 @@ docker.run.variant.vars:
 	@rm -f $(VARIANT_VARS_TEMP_FILE_PATH)
 
 	@(env | grep VARIANT_) > $(VARIANT_VARS_TEMP_FILE_PATH)
+	@(env | grep TOOLBOX_) >> $(VARIANT_VARS_TEMP_FILE_PATH)
 
 	$(eval ENV_CMD = $(if $(VARIANT_ENVIRONMENT),./$(FIRST_ARG) env set $(ENVIRONMENT); ,))
 
