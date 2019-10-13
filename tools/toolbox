@@ -28,13 +28,22 @@ tasks:
           arguments:
             title: Install tools
             cmd: |
+              # Remove & recreate toolbox dir
               rm -fR {{ .TOOLBOX_TOOLS_DIR }};
               mkdir -p {{ .TOOLBOX_TOOLS_DIR }};
-              uniconf -c {{ .TOOLBOX_SETTINGS_FILE_NAME }} > {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }}; # Process config
+
+              # Process config
+              uniconf -c {{ .TOOLBOX_SETTINGS_FILE_NAME }} > {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }};
+
+              # Retrieve libraries
               yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq -r '.tools | to_entries | unique_by(.value.destination) | .[] | select(.value.source != null) | @text "\(.value.source) \(.value.prefix)/\(.value.tools_dir)/\(.value.destination)"' | xargs -n2 go-getter;
+
+              # Mark git revision of the tool and remove ".git" dir to be able to add tools into root git repo
               yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq -r '.tools | to_entries | unique_by(.value.destination) | .[] | select(.value.source != null) | @text "\(.value.prefix)/\(.value.tools_dir)/\(.value.destination)"' | \
                 xargs -I "%" \
                   sh -c "cd %; [ -d .git ] && (git rev-parse --short HEAD > REVISION; rm -fR .git)" || true;
+
+              # Remove tmp dir
               rm -fR .unipipe_temp;
 
         list:
