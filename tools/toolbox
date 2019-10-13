@@ -55,7 +55,7 @@ tasks:
               uniconf -c {{ .TOOLBOX_SETTINGS_FILE_NAME }} > {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }};
 
               # List tools
-              yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq -r '.tools | to_entries | .[] | @text "\(.value.source) \(.value.prefix)/\(.value.tools_dir)/\(.value.destination)"';
+              yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq -r '.tools | to_entries | unique_by(.value.destination)| .[] | @text "\(.value.source) \(.value.prefix)/\(.value.tools_dir)/\(.value.destination)"';
 
   cmd:
     tasks:
