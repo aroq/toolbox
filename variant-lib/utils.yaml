@@ -65,3 +65,17 @@ tasks:
             cmd: |
               rm {{ .secret_file }}
 
+  gpg:
+    bindParamsFromEnv: true
+    parameters:
+    - name: TOOLBOX_GPG_KEY_FILE_PATH
+      type: string
+    tasks:
+      import_key:
+        steps:
+        - task: exec
+          arguments:
+            title: "GPG :: Import key"
+            cmd: |
+              gpg --batch --import {{ .TOOLBOX_GPG_KEY_FILE_PATH }}
+
