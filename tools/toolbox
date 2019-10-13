@@ -51,7 +51,10 @@ tasks:
           - task: exec
             arguments:
               cmd: |
+                # Process config
                 uniconf -c {{ .TOOLBOX_SETTINGS_FILE_NAME }} > {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }};
+
+                # List tools
                 yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq -r '.tools | to_entries | .[] | @text "\(.value.source) \(.value.prefix)/\(.value.tools_dir)/\(.value.destination)"';
 
   cmd:
@@ -61,7 +64,10 @@ tasks:
         - task: exec
           arguments:
             cmd: |
+              # Remove and recreate bin dir
               mkdir -p {{ .TOOLBOX_EXECUTABLES_DIR }};
+
+              # Create bin/* tool executable scripts
               yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | \
                 jq -r '.tools | to_entries | .[] | .key' | \
                 xargs -I "%" \
@@ -72,7 +78,7 @@ tasks:
         - task: exec
           arguments:
             cmd: |
-              mkdir -p {{ .TOOLBOX_EXECUTABLES_DIR }};
+              # List bin/* executable script
               yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | \
                 jq -r '.tools | to_entries | .[] | .key' | \
                 xargs -I "%" \
