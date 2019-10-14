@@ -81,7 +81,7 @@ tasks:
 
       show:
         parameters:
-        - name: task_name
+        - name: tool_name
           type: string
         steps:
         - task: exec
@@ -89,5 +89,5 @@ tasks:
             cmd: |
               # Show command definition
               yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | \
-                jq -r '.tools.{{ .task_name }}'
+                jq -r '.tools.{{ .tool_name }}'
 
