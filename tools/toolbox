@@ -61,6 +61,9 @@ tasks:
         - task: exec
           arguments:
             cmd: |
+              # Process config
+              uniconf -c {{ .TOOLBOX_SETTINGS_FILE_NAME }} > {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }};
+
               # Remove and recreate bin dir
               mkdir -p {{ .TOOLBOX_EXECUTABLES_DIR }};
 
