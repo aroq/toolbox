@@ -65,6 +65,7 @@ tasks:
               uniconf -c {{ .TOOLBOX_SETTINGS_FILE_NAME }} > {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }};
 
               # Remove and recreate bin dir
+              rm -fR {{ .TOOLBOX_EXECUTABLES_DIR }};
               mkdir -p {{ .TOOLBOX_EXECUTABLES_DIR }};
 
               # Create "bin/*" tool executable scripts
