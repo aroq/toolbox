@@ -45,21 +45,21 @@ tasks:
     tasks:
       hide:
         steps:
-        - task: exec
+        - task: core.exec
           arguments:
             title: "Git secret :: Hide secret"
             cmd: |
               git secret hide {{ .secret_file }}
       reveal:
         steps:
-        - task: exec
+        - task: core.exec
           arguments:
             title: "Git secret :: Reveal secret"
             cmd: |
               git secret reveal -f {{ .secret_file }}
       delete:
         steps:
-        - task: exec
+        - task: core.exec
           arguments:
             title: "Git secret :: Remove secret file"
             cmd: |
@@ -73,8 +73,9 @@ tasks:
     tasks:
       import_key:
         steps:
-        - task: exec
+        - task: core.exec
           arguments:
             title: "GPG :: Import key"
             cmd: |
               gpg --batch --import {{ .TOOLBOX_GPG_KEY_FILE_PATH }}
+
