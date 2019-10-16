@@ -36,17 +36,6 @@ config:
           deploy:
             params:
               cmd: release/deploy
-
-  profiles:
-    aws:
-      params:
-        env:
-          AWS_ACCESS_KEY_ID:
-          AWS_SECRET_ACCESS_KEY:
-          AWS_DEFAULT_REGION:
-          AWS_SESSION_TOKEN:
-          AWS_SECURITY_TOKEN:
-
 tools:
   toolbox:
     from: config.libraries.toolbox.commands.toolbox
