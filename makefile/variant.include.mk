@@ -111,5 +111,3 @@ docker.run.variant.vars:
 	@rm -f $(BINDED_VARS_TEMP_FILE_PATH)
 	@rm -f $(VARIANT_VARS_TEMP_FILE_PATH)
 
-
-

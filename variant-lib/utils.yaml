@@ -78,4 +78,3 @@ tasks:
             title: "GPG :: Import key"
             cmd: |
               gpg --batch --import {{ .TOOLBOX_GPG_KEY_FILE_PATH }}
-

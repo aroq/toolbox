@@ -54,7 +54,11 @@ endif
 
 	$(eval TOOLBOX_TOOL_DOCKER_IMAGE = $(if $(TOOLBOX_TOOL_DOCKER_IMAGE),$(TOOLBOX_TOOL_DOCKER_IMAGE),$(${ARG_IMAGE})))
 
+ifeq ("$(TOOLBOX_DEBUG)",true)
+	docker run $(strip $(DOCKER_RUN_ARGS) $(DOCKER_RUN_MOUNT_VOLUME)) $(TOOLBOX_TOOL_DOCKER_IMAGE) sh -c '$(DOCKER_CMD)'
+else
 	@docker run $(strip $(DOCKER_RUN_ARGS) $(DOCKER_RUN_MOUNT_VOLUME)) $(TOOLBOX_TOOL_DOCKER_IMAGE) sh -c '$(DOCKER_CMD)'
+endif
 
 #######################################
 # docker.init.forward
@@ -74,3 +78,4 @@ LOCAL_SSH_ID_RSA_KEY_FILE ?= id_rsa
 .PHONY: docker.osx.ssh.agent
 docker.osx.ssh.agent:
 	@docker ps --filter "name=ssh-agent" --format "{{.Names}}" | grep -q ssh-agent || (docker run --rm -d --name=ssh-agent nardeas/ssh-agent && docker run --rm --volumes-from=ssh-agent -v $(LOCAL_SSH_ID_RSA_KEY_PATH):/.ssh -it nardeas/ssh-agent ssh-add /root/.ssh/$(LOCAL_SSH_ID_RSA_KEY_FILE))
+
