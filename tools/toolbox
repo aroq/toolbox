@@ -68,11 +68,16 @@ tasks:
               rm -fR {{ .TOOLBOX_EXECUTABLES_DIR }};
               mkdir -p {{ .TOOLBOX_EXECUTABLES_DIR }};
 
+              yq r .toolbox/.toolbox.settings.yaml -j | \
+                jq -r '.tools | to_entries | .[] | select(.key | contains("/")) | .key | capture("(?<dir>.*)\/.*") | .dir' | \
+                xargs -I "%" \
+                  sh -c "mkdir -p {{ .TOOLBOX_EXECUTABLES_DIR }}/%"
+
               # Create "bin/*" tool executable scripts
               yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | \
                 jq -r '.tools | to_entries | .[] | .key' | \
                 xargs -I "%" \
-                sh -c "yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq '.tools | .[\"%\"]' | gomplate -f {{ .TOOLBOX_DIR }}/core/templates/bin/run.tpl -o {{ .TOOLBOX_EXECUTABLES_DIR }}/% --context task=stdin:///foo.yml; chmod a+x {{ .TOOLBOX_EXECUTABLES_DIR }}/%";
+                  sh -c "yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq '.tools | .[\"%\"]' | gomplate -f {{ .TOOLBOX_DIR }}/core/templates/bin/run.tpl -o {{ .TOOLBOX_EXECUTABLES_DIR }}/% --context task=stdin:///foo.yml; chmod a+x {{ .TOOLBOX_EXECUTABLES_DIR }}/%";
 
               # Remove tmp dir
               rm -fR .unipipe_temp;
@@ -97,6 +102,7 @@ tasks:
               # Show command definition
               yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | \
                 jq -r '.tools.{{ .tool_name }}'
+
 
 
 
