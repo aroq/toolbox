@@ -38,6 +38,44 @@ tasks:
           {{list .flags .cmd | join " "}}
         fi
 
+  config:
+    description: Config management tasks
+    parameters:
+    - name: TOOLBOX_CONFIG_DEFINES_FILE_PATH
+      default: config/defines.yaml
+    - name: TOOLBOX_CONFIG_DEFINES_PROCESSED_FILE_PATH
+      default: config/defines.processed.yaml
+    - name: TOOLBOX_CONFIG_RENDERED_DIR
+      default: config/rendered
+    - name: TOOLBOX_CONFIG_DIR
+      default: config
+    - name: TOOLBOX_CONFIG_TEMPLATES_DIR
+      default: config/templates
+    tasks:
+      clean:
+        steps:
+        - task: core.exec
+          arguments:
+            cmd: rm -fR {{ .TOOLBOX_CONFIG_RENDERED_DIR }}
+      process:
+        steps:
+        - task: core.exec
+          arguments:
+            cmd: |
+              # Process config
+              uniconf -c {{ .TOOLBOX_CONFIG_DEFINES_FILE_PATH }} > {{ .TOOLBOX_CONFIG_DEFINES_PROCESSED_FILE_PATH }};
+
+      render:
+        steps:
+        - task: core.exec
+          arguments:
+            cmd: |
+              # rm -fR {{ .TOOLBOX_CONFIG_RENDERED_DIR }}
+              # mkdir -p {{ .TOOLBOX_CONFIG_RENDERED_DIR }}
+              gomplate -d defines={{ .TOOLBOX_CONFIG_DEFINES_PROCESSED_FILE_PATH }} \
+              --input-dir={{ .TOOLBOX_CONFIG_TEMPLATES_DIR }} \
+              --output-dir={{ .TOOLBOX_CONFIG_RENDERED_DIR }}
+
   git-secret:
     parameters:
     - name: secret_file
@@ -68,7 +106,7 @@ tasks:
   gpg:
     bindParamsFromEnv: true
     parameters:
-    - name: TOOLBOX_GPG_KEY_FILE_PATH
+    - name: gpg_key_file
       type: string
     tasks:
       import_key:
@@ -77,5 +115,6 @@ tasks:
           arguments:
             title: "GPG :: Import key"
             cmd: |
-              gpg --batch --import {{ .TOOLBOX_GPG_KEY_FILE_PATH }}
+              gpg --batch --import {{ .gpg_key_file }}
+
 
