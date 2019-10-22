@@ -11,6 +11,8 @@ config:
 
   libraries:
     params:
+      variant_config_context:
+      - core
       prefix: .toolbox
       tools_dir: tools
       image: aroq/toolbox
