@@ -63,18 +63,46 @@ tasks:
           arguments:
             cmd: |
               # Process config
-              uniconf -c {{ .TOOLBOX_CONFIG_DEFINES_FILE_PATH }} > {{ .TOOLBOX_CONFIG_DEFINES_PROCESSED_FILE_PATH }};
+              uniconf -c {{ .TOOLBOX_CONFIG_DEFINES_FILE_PATH }} > {{ .TOOLBOX_CONFIG_DEFINES_PROCESSED_FILE_PATH }} 2> /dev/null;
+        tasks:
+          path:
+            parameters:
+            - name: dir
+              type: string
+            - name: file
+              type: string
+            - name: path
+              type: string
+            steps:
+            - task: core.exec
+              arguments:
+                cmd: |
+                  mkdir -p {{ .dir }}
+                  yq r {{ .TOOLBOX_CONFIG_DEFINES_PROCESSED_FILE_PATH }} {{ .path }} > {{ .dir }}/{{ .file }}
 
       render:
         steps:
         - task: core.exec
           arguments:
             cmd: |
-              # rm -fR {{ .TOOLBOX_CONFIG_RENDERED_DIR }}
-              # mkdir -p {{ .TOOLBOX_CONFIG_RENDERED_DIR }}
               gomplate -d defines={{ .TOOLBOX_CONFIG_DEFINES_PROCESSED_FILE_PATH }} \
               --input-dir={{ .TOOLBOX_CONFIG_TEMPLATES_DIR }} \
               --output-dir={{ .TOOLBOX_CONFIG_RENDERED_DIR }}
+        tasks:
+          stdin:
+            parameters:
+            - name: json_path
+              type: string
+            steps:
+            - task: core.exec
+              arguments:
+                cmd: |
+                  yq r {{ .TOOLBOX_CONFIG_DEFINES_PROCESSED_FILE_PATH }} -j | \
+                  jq -r '{{ .json_path }}' | \
+                  gomplate -d defines=stdin:///foo.yaml \
+                    --input-dir={{ .TOOLBOX_CONFIG_TEMPLATES_DIR }} \
+                    --output-dir={{ .TOOLBOX_CONFIG_RENDERED_DIR }}
+
 
   git-secret:
     parameters:
@@ -116,6 +144,7 @@ tasks:
             title: "GPG :: Import key"
             cmd: |
               gpg --batch --import {{ .gpg_key_file }}
+
 
 
 
