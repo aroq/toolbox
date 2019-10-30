@@ -11,7 +11,7 @@ parameters:
 - name: TOOLBOX_TOOLS_DIR
   default: .toolbox/tools
 - name: TOOLBOX_SETTINGS_FILE_NAME
-  default: .toolbox.settings.yaml
+  default: toolbox.settings.yaml
 - name: TOOLBOX_EXECUTABLES_DIR
   default: .toolbox/bin
 
