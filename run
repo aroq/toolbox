@@ -9,7 +9,8 @@ fi
 
 CMD=${1}
 export TOOLBOX_TOOL_DOCKER_IMAGE=${TOOLBOX_TOOL_DOCKER_IMAGE:-$2}
-PREFIX=${PREFIX:-.toolbox}
+TOOLBOX_DIR_PREFIX=${TOOLBOX_DIR_PREFIX:-.toolbox}
+TOOLBOX_PROJECT_DIR_PREFIX=${PROJECT_TOOLBOX_DIR_PREFIX:-toolbox}
 
 # echo "CMD: ${CMD}"
 
@@ -38,20 +39,10 @@ if [[ -f ".env.local" ]]; then
   source ".env.local"
 fi
 
-# Load environment variables from .env file
-if [[ -f ".env.k6" ]]; then
-  source ".env.k6"
-fi
-
-# Load environment variables from  local git-ignored .env.local file
-if [[ -f ".env.k6.local" ]]; then
-  source ".env.k6.local"
-fi
-
-if [[ -f "${CMD}" ]]; then
-  TOOL_PATH="${CMD}"
+if [[ -f "${TOOLBOX_PROJECT_DIR_PREFIX}/${CMD}" ]]; then
+  TOOL_PATH="${TOOLBOX_PROJECT_DIR_PREFIX}/${CMD}"
 else
-  TOOL_PATH="${PREFIX}/${CMD}"
+  TOOL_PATH="${TOOLBOX_DIR_PREFIX}/${CMD}"
 fi
 
 # Remove the first argument
