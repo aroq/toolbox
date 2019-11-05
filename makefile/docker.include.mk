@@ -7,7 +7,7 @@ DOCKER_CMD ?=
 DOCKER_RUN_WORKING_DIR ?= -w "$(shell pwd)"
 DOCKER_RUN_DEFAULT_VOLUME ?= -v "$(shell pwd)":"$(shell pwd)"
 DOCKER_RUN_CLEAN ?= --rm
-DOCKER_RUN_TTY ?= -t
+DOCKER_RUN_TTY ?= -it
 DOCKER_RUN_ARGS ?= $(DOCKER_RUN_CLEAN) $(DOCKER_RUN_TTY) $(DOCKER_RUN_DEFAULT_VOLUME) $(DOCKER_RUN_WORKING_DIR)
 DOCKER_RUN_MOUNT_VOLUME ?=
 
@@ -78,4 +78,3 @@ LOCAL_SSH_ID_RSA_KEY_FILE ?= id_rsa
 .PHONY: docker.osx.ssh.agent
 docker.osx.ssh.agent:
 	@docker ps --filter "name=ssh-agent" --format "{{.Names}}" | grep -q ssh-agent || (docker run --rm -d --name=ssh-agent nardeas/ssh-agent && docker run --rm --volumes-from=ssh-agent -v $(LOCAL_SSH_ID_RSA_KEY_PATH):/.ssh -it nardeas/ssh-agent ssh-add /root/.ssh/$(LOCAL_SSH_ID_RSA_KEY_FILE))
-
