@@ -8,6 +8,8 @@ description: Toolbox management tasks
 parameters:
 - name: TOOLBOX_DIR
   default: .toolbox
+- name: TOOLBOX_PROJECT_DIR
+  default: toolbox
 - name: TOOLBOX_TOOLS_DIR
   default: .toolbox/tools
 - name: TOOLBOX_SETTINGS_FILE_NAME
@@ -28,12 +30,13 @@ tasks:
           arguments:
             title: Install tools
             cmd: |
+              set -e
               # Remove & recreate toolbox dir
               rm -fR {{ .TOOLBOX_TOOLS_DIR }};
               mkdir -p {{ .TOOLBOX_TOOLS_DIR }};
 
               # Process config
-              uniconf -c {{ .TOOLBOX_SETTINGS_FILE_NAME }} 2> /dev/null > {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }};
+              uniconf -c {{ .TOOLBOX_PROJECT_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} 2> /dev/null > {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }};
 
               # Retrieve libraries
               yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq -r '.tools | to_entries | unique_by(.value.destination) | .[] | select(.value.source != null) | @text "\(.value.source) \(.value.prefix)/\(.value.tools_dir)/\(.value.destination)"' | xargs -n2 go-getter;
@@ -62,7 +65,7 @@ tasks:
           arguments:
             cmd: |
               # Process config
-              uniconf -c {{ .TOOLBOX_SETTINGS_FILE_NAME }} 2> /dev/null > {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }};
+              uniconf -c {{ .TOOLBOX_PROJECT_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} 2> /dev/null > {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }};
 
               # Remove and recreate bin dir
               rm -fR {{ .TOOLBOX_EXECUTABLES_DIR }};
@@ -102,4 +105,6 @@ tasks:
               # Show command definition
               yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | \
                 jq -r '.tools.{{ .tool_name }}'
+
+
 
