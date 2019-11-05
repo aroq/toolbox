@@ -42,15 +42,15 @@ tasks:
     description: Config management tasks
     parameters:
     - name: TOOLBOX_CONFIG_DEFINES_FILE_PATH
-      default: config/defines.yaml
+      default: toolbox/config/defines.yaml
     - name: TOOLBOX_CONFIG_DEFINES_PROCESSED_FILE_PATH
-      default: config/defines.processed.yaml
+      default: toolbox/config/defines.processed.yaml
     - name: TOOLBOX_CONFIG_RENDERED_DIR
-      default: config/rendered
+      default: toolbox/config/rendered
     - name: TOOLBOX_CONFIG_DIR
-      default: config
+      default: toolbox/config
     - name: TOOLBOX_CONFIG_TEMPLATES_DIR
-      default: config/templates
+      default: toolbox/config/templates
     tasks:
       clean:
         steps:
@@ -144,6 +144,7 @@ tasks:
             title: "GPG :: Import key"
             cmd: |
               gpg --batch --import {{ .gpg_key_file }}
+
 
 
 

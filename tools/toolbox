@@ -68,7 +68,7 @@ tasks:
               rm -fR {{ .TOOLBOX_EXECUTABLES_DIR }};
               mkdir -p {{ .TOOLBOX_EXECUTABLES_DIR }};
 
-              yq r .toolbox/.toolbox.settings.yaml -j | \
+              yq r .toolbox/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | \
                 jq -r '.tools | to_entries | .[] | select(.key | contains("/")) | .key | capture("(?<dir>.*)\/.*") | .dir' | \
                 xargs -I "%" \
                   sh -c "mkdir -p {{ .TOOLBOX_EXECUTABLES_DIR }}/%"
@@ -102,3 +102,4 @@ tasks:
               # Show command definition
               yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | \
                 jq -r '.tools.{{ .tool_name }}'
+
