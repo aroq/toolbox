@@ -2,11 +2,11 @@ config:
   environments:
     dev:
       params:
-        variant_config_context:
+        config_context_prefix:
         - dev
     prod:
       params:
-        variant_config_context:
+        config_context_prefix:
         - prod
 
   libraries:
