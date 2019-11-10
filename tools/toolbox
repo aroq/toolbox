@@ -55,7 +55,34 @@ tasks:
           arguments:
             cmd: |
               # List tools
-              yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq -r '.tools | to_entries | unique_by(.value.destination)| .[] | @text "\(.value.source) \(.value.prefix)/\(.value.tools_dir)/\(.value.destination)"';
+              yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq -r '.tools | to_entries | unique_by(.value.destination)| .[] | select(.value.source != null) | @text "\(.value.source) \(.value.prefix)/\(.value.tools_dir)/\(.value.destination)"';
+
+  deps:
+    tasks:
+      install:
+        steps:
+        - task: exec
+          arguments:
+            title: Install deps
+            cmd: |
+              set -e
+              rm -fR toolbox/deps
+
+              # Process config
+              uniconf -c {{ .TOOLBOX_PROJECT_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} 2> /dev/null > {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }};
+
+              mkdir -p ~/.ssh && echo "Host *" > ~/.ssh/config && echo " StrictHostKeyChecking no" >> ~/.ssh/config
+
+              # Retrieve deps
+              yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq -r '.deps | to_entries | . [] | @text "\(.value.source) \(.value.prefix)/\(.key)"' | xargs -n2 go-getter;
+
+      list:
+        steps:
+        - task: exec
+          arguments:
+            cmd: |
+              # List tools
+              yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq -r '.deps';
 
   cmd:
     tasks:
@@ -105,7 +132,3 @@ tasks:
               # Show command definition
               yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | \
                 jq -r '.tools.{{ .tool_name }}'
-
-
-
-
