@@ -1,7 +1,7 @@
 #!/usr/bin/env variant
 # vi: ft=yaml
 #
-import: /usr/toolbox/deps/toolbox/variant-lib/utils.yaml
+import: toolbox/.toolbox/deps/toolbox/variant-lib/utils.yaml
 
 description: Toolbox management tasks
 
@@ -18,16 +18,6 @@ parameters:
   default: toolbox/bin
 
 tasks:
-  initialize:
-    steps:
-    - task: exec
-      arguments:
-        title: Toolbox initialize
-        cmd: |
-          mkdir -p toolbox/.toolbox/deps/toolbox
-          rsync -r --ignore-existing /usr/toolbox/deps/toolbox toolbox/.toolbox/deps
-          rsync -r --ignore-existing toolbox/.toolbox/deps/toolbox/templates/boilerplate/. toolbox/
-    - task: cmd.create
   tools:
     tasks:
       install:
