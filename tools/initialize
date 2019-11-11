@@ -17,4 +17,4 @@ steps:
   arguments:
     title: Toolbox initialize
     cmd: |
-      make toolbox/.toolbox/deps/toolbox/tools/toolbox cmd create
+      toolbox/.toolbox/deps/toolbox/tools/toolbox cmd create
