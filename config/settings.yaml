@@ -24,13 +24,13 @@ config:
       commands:
         toolbox:
           params:
-            cmd: toolbox/toolbox
+            cmd: toolbox
         template:
           params:
-            cmd: toolbox/template
+            cmd: template
         uniconf:
           params:
-            cmd: toolbox/uniconf
+            cmd: uniconf
     cicd:
       params:
         destination: cicd
