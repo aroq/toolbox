@@ -1,3 +1,4 @@
+export TOOLBOX_PROJECT ?= toolbox
 export TOOLBOX_DIR ?= .toolbox
 
 export TOOLBOX_CORE_DIR ?= $(TOOLBOX_PROJECT)/$(TOOLBOX_DIR)/deps/toolbox
