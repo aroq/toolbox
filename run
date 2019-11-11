@@ -60,6 +60,7 @@ ARGS=$(echo "$*" | tr '=' ' ')
 if [ -z "${TOOL_PATH}" ]; then
   echo "Tool ${CMD} is not found"
 else
+  echo "make ${TOOL_PATH} -- ${ARGS}"
   eval "make ${TOOL_PATH} -- ${ARGS}"
 fi
 
