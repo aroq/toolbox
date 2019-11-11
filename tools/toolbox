@@ -25,7 +25,7 @@ tasks:
         title: Toolbox initialize
         cmd: |
           pwd
-          cp -fR toolbox/.toolbox/templates/boilerplate/. toolbox
+          cp -fR toolbox/.toolbox/deps/toolbox/templates/boilerplate/. toolbox
           ls -lah
   tools:
     tasks:
