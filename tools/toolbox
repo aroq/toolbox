@@ -25,8 +25,8 @@ tasks:
         title: Toolbox initialize
         cmd: |
           mkdir -p toolbox/.toolbox/deps/toolbox
-          rsync -r --ignore-existing /usr/toolbox/deps/toolbox toolbox/.toolbox/deps/toolbox
-          rsync -r --ignore-existing toolbox/.toolbox/deps/toolbox/templates/boilerplate/. toolbox
+          rsync -r --ignore-existing /usr/toolbox/deps/toolbox toolbox/.toolbox/deps
+          rsync -r --ignore-existing toolbox/.toolbox/deps/toolbox/templates/boilerplate/. toolbox/
     - task: cmd.create
   tools:
     tasks:
