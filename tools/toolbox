@@ -65,12 +65,12 @@ tasks:
               rm -fR toolbox/deps
 
               # Process config
-              uniconf -c {{ .TOOLBOX_PROJECT_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} 2> /dev/null > {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }};
+              uniconf -c {{ .TOOLBOX_PROJECT_DIR }}/config/source/{{ .TOOLBOX_SETTINGS_FILE_NAME }} 2> /dev/null > {{ .TOOLBOX_PROJECT_DIR }}/config/rendered/{{ .TOOLBOX_SETTINGS_FILE_NAME }};
 
               mkdir -p ~/.ssh && echo "Host *" > ~/.ssh/config && echo " StrictHostKeyChecking no" >> ~/.ssh/config
 
               # Retrieve deps
-              yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq -r '.deps | to_entries | . [] | @text "\(.value.source) \(.value.prefix)/\(.key)"' | xargs -n2 go-getter;
+              yq r {{ .TOOLBOX_PROJECT_DIR }}/config/rendered/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq -r '.deps | to_entries | . [] | @text "\(.value.source) \(.value.prefix)/\(.key)"' | xargs -n2 go-getter;
 
       list:
         steps:
@@ -78,7 +78,7 @@ tasks:
           arguments:
             cmd: |
               # List tools
-              yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq -r '.deps';
+              yq r {{ .TOOLBOX_PROJECT_DIR }}/config/rendered/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq -r '.deps';
 
   cmd:
     tasks:
