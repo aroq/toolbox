@@ -12,7 +12,7 @@ export _TOOLBOX_CORE_TOOLS_TOOLBOX_IMAGE ?= aroq/toolbox:$(TOOLBOX_DOCKER_IMAGE_
 export VARS_RETRIEVE_IMAGE ?= aroq/toolbox:$(TOOLBOX_DOCKER_IMAGE_VERSION)
 export TOOLBOX_DOCKER_SSH_FORWARD ?= false
 
--include $(TOOLBOX_PATH)/core/makefile/Makefile
+-include $(TOOLBOX_PATH)/deps/toolbox/makefile/Makefile
 
 ## Init toolbox
 .PHONY : init
@@ -27,3 +27,4 @@ clean::
 	@[ "$(TOOLBOX_PATH)" == '/' ] || \
 	 [ "$(TOOLBOX_PATH)" == '.' ] || \
 	   rm -fR $(TOOLBOX_PATH)
+
