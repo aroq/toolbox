@@ -31,3 +31,5 @@ RUN apk add --no-cache --update $(grep -v '^#' /etc/apk/packages.txt)
 # Add git-secret package from edge testing
 RUN apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing git-secret
 
+RUN mkdir -p /usr/toolbox/deps/toolbox
+COPY ./* /usr/toolbox/deps/toolbox
