@@ -1,0 +1,22 @@
+# deps:
+  # # toolbox: github.com/aroq/toolbox//config?ref=master
+  # toolbox-cloud: github.com/aroq/toolbox-cloud?ref=master
+  # infra-k8s-root: git@code.adyax.com:zebra-infra/intra-k8s-root.git?ref=master
+
+from:
+- .toolbox/core/config/settings.yaml
+
+config:
+  libraries:
+    params:
+      tool_dirs:
+        - .
+        - .toolbox/core
+      env:
+        VARIANT_LOG_LEVEL: info
+
+tools:
+  test:
+    from:
+    - config.libraries
+    cmd: test

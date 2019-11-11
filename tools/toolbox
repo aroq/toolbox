@@ -20,8 +20,12 @@ parameters:
 tasks:
   initialize:
     steps:
-      - task: tools.install
-      - task: cmd.create
+    - task: exec
+      arguments:
+        title: Toolbox initialize
+        cmd: |
+          ls -al
+          pwd
   tools:
     tasks:
       install:
