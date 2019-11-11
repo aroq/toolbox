@@ -62,7 +62,7 @@ tasks:
             title: Install deps
             cmd: |
               set -e
-              # rm -fR toolbox/.toolbox/deps
+              rm -fR toolbox/.toolbox/deps
 
               # Process config
               uniconf -c {{ .TOOLBOX_PROJECT_DIR }}/config/source/{{ .TOOLBOX_SETTINGS_FILE_NAME }} 2> /dev/null > {{ .TOOLBOX_PROJECT_DIR }}/config/rendered/{{ .TOOLBOX_SETTINGS_FILE_NAME }};
