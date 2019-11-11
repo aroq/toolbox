@@ -62,7 +62,7 @@ tasks:
             title: Install deps
             cmd: |
               set -e
-              rm -fR toolbox/deps
+              rm -fR toolbox/.toolbox/deps
 
               # Process config
               uniconf -c {{ .TOOLBOX_PROJECT_DIR }}/config/source/{{ .TOOLBOX_SETTINGS_FILE_NAME }} 2> /dev/null > {{ .TOOLBOX_PROJECT_DIR }}/config/rendered/{{ .TOOLBOX_SETTINGS_FILE_NAME }};
@@ -70,7 +70,7 @@ tasks:
               mkdir -p ~/.ssh && echo "Host *" > ~/.ssh/config && echo " StrictHostKeyChecking no" >> ~/.ssh/config
 
               # Retrieve deps
-              yq r {{ .TOOLBOX_PROJECT_DIR }}/config/rendered/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq -r '.deps | to_entries | . [] | @text "\(.value.source) \(.value.prefix)/\(.key)"' | xargs -n2 go-getter;
+              yq r {{ .TOOLBOX_PROJECT_DIR }}/config/rendered/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq -r '.deps | to_entries | . [] | @text "\(.value.source) toolbox/.toolbox/deps/\(.key)"' | xargs -n2 go-getter;
 
       list:
         steps:
