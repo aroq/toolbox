@@ -12,9 +12,6 @@ export _TOOLBOX_CORE_TOOLS_TOOLBOX_IMAGE ?= aroq/toolbox:$(TOOLBOX_DOCKER_IMAGE_
 export VARS_RETRIEVE_IMAGE ?= aroq/toolbox:$(TOOLBOX_DOCKER_IMAGE_VERSION)
 export TOOLBOX_DOCKER_SSH_FORWARD ?= false
 
-check2:
-	echo "$(TOOLBOX_PROJECT)/$(TOOLBOX_DIR)/deps/toolbox/makefile/Makefile"
-
 -include $(TOOLBOX_PROJECT)/$(TOOLBOX_DIR)/deps/toolbox/makefile/Makefile
 
 ## Clean toolbox
