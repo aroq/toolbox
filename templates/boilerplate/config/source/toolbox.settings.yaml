@@ -1,7 +1,7 @@
 deps:
   toolbox: github.com/aroq/toolbox?ref=master
-  toolbox-cloud: github.com/aroq/toolbox-cloud?ref=master
-  infra-k8s-root: git@code.adyax.com:zebra-infra/intra-k8s-root.git?ref=master
+  # toolbox-cloud: github.com/aroq/toolbox-cloud?ref=master
+  # infra-k8s-root: git@code.adyax.com:zebra-infra/intra-k8s-root.git?ref=master
 
 from:
 - toolbox/.toolbox/deps/toolbox/config/settings.yaml
