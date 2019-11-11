@@ -26,6 +26,7 @@ tasks:
         cmd: |
           pwd
           cp -fR toolbox/.toolbox/deps/toolbox/templates/boilerplate/. toolbox
+          toolbox/.toolbox/deps/toolbox/tools/toolbox cmd create
           ls -lah
   tools:
     tasks:
