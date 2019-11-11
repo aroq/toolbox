@@ -24,8 +24,7 @@ tasks:
       arguments:
         title: Toolbox initialize
         cmd: |
-          pwd
-          cp -fR toolbox/.toolbox/deps/toolbox/templates/boilerplate/. toolbox
+          rsync -r --ignore-existing toolbox/.toolbox/deps/toolbox/templates/boilerplate/. toolbox
     - task: cmd.create
   tools:
     tasks:
