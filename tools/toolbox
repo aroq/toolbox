@@ -24,8 +24,9 @@ tasks:
       arguments:
         title: Toolbox initialize
         cmd: |
-          ls -al
           pwd
+          cp -fR toolbox/.toolbox/templates/boilerplate/. toolbox
+          ls -lah
   tools:
     tasks:
       install:
