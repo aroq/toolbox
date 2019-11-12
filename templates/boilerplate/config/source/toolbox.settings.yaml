@@ -4,7 +4,7 @@ deps:
   # infra-k8s-root: git@code.adyax.com:zebra-infra/intra-k8s-root.git?ref=master
 
 from:
-- toolbox/.toolbox/deps/toolbox/config/settings.yaml
+- toolbox/.toolbox/deps/toolbox/config/toolbox.settings.yaml
 
 config:
   libraries:
