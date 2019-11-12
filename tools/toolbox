@@ -10,49 +10,12 @@ parameters:
   default: toolbox/.toolbox
 - name: TOOLBOX_PROJECT_DIR
   default: toolbox
-# - name: TOOLBOX_TOOLS_DIR
-  # default: toolbox/.toolbox/tools
 - name: TOOLBOX_SETTINGS_FILE_NAME
   default: toolbox.settings.yaml
 - name: TOOLBOX_EXECUTABLES_DIR
   default: toolbox/bin
 
 tasks:
-  tools:
-    tasks:
-      install:
-        steps:
-        - task: exec
-          arguments:
-            title: Install tools
-            cmd: |
-              set -e
-              # Remove & recreate toolbox dir
-              rm -fR {{ .TOOLBOX_TOOLS_DIR }};
-              mkdir -p {{ .TOOLBOX_TOOLS_DIR }};
-
-              # Process config
-              uniconf -c {{ .TOOLBOX_PROJECT_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} 2> /dev/null > {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }};
-
-              # Retrieve libraries
-              yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq -r '.tools | to_entries | unique_by(.value.destination) | .[] | select(.value.source != null) | @text "\(.value.source) \(.value.prefix)/\(.value.tools_dir)/\(.value.destination)"' | xargs -n2 go-getter;
-
-              # Mark git revision of the tool and remove ".git" dir to be able to add tools into root git repo
-              yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq -r '.tools | to_entries | unique_by(.value.destination) | .[] | select(.value.source != null) | @text "\(.value.prefix)/\(.value.tools_dir)/\(.value.destination)"' | \
-                xargs -I "%" \
-                  sh -c "cd %; [ -d .git ] && (git rev-parse --short HEAD > REVISION; rm -fR .git)" || true;
-
-              # Remove tmp dir
-              rm -fR .unipipe_temp;
-
-      list:
-        steps:
-        - task: exec
-          arguments:
-            cmd: |
-              # List tools
-              yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq -r '.tools | to_entries | unique_by(.value.destination)| .[] | select(.value.source != null) | @text "\(.value.source) \(.value.prefix)/\(.value.tools_dir)/\(.value.destination)"';
-
   deps:
     tasks:
       install:
@@ -62,7 +25,6 @@ tasks:
             title: Install deps
             cmd: |
               # set -e
-              
               rm -fR toolbox/.toolbox/tmp/deps
 
               # Process config
@@ -79,6 +41,7 @@ tasks:
               xargs -I "%" \
                 sh -c "cd %; [ -d .git ] && (git rev-parse --short HEAD > REVISION; rm -fR .git)" || true;
 
+              # Replace old deps
               rm -fR toolbox/.toolbox/deps
               cp -fR toolbox/.toolbox/tmp/deps toolbox/.toolbox
 
@@ -89,7 +52,6 @@ tasks:
             cmd: |
               uniconf -c {{ .TOOLBOX_PROJECT_DIR }}/config/source/{{ .TOOLBOX_SETTINGS_FILE_NAME }} 2> /dev/null > {{ .TOOLBOX_PROJECT_DIR }}/config/rendered/{{ .TOOLBOX_SETTINGS_FILE_NAME }};
 
-              cat {{ .TOOLBOX_PROJECT_DIR }}/config/rendered/{{ .TOOLBOX_SETTINGS_FILE_NAME }}
               # List tools
               yq r {{ .TOOLBOX_PROJECT_DIR }}/config/rendered/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq -r '.deps';
 
@@ -108,6 +70,7 @@ tasks:
               rm -fR {{ .TOOLBOX_EXECUTABLES_DIR }};
               mkdir -p {{ .TOOLBOX_EXECUTABLES_DIR }};
 
+              # Create bin dirs hierarchy
               yq r {{ .TOOLBOX_PROJECT_DIR }}/config/rendered/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | \
                 jq -r '.tools | to_entries | .[] | select(.key | contains("/")) | .key | capture("(?<dir>.*)\/.*") | .dir' | \
                 xargs -I "%" \
