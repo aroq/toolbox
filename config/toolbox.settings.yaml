@@ -12,7 +12,6 @@ config:
   libraries:
     params:
       tool_dirs:
-        - toolbox
         - toolbox/.toolbox/deps/toolbox
       env:
         VARIANT_LOG_LEVEL: info
