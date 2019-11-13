@@ -1,7 +1,5 @@
 #!/usr/bin/env variant
 # vi: ft=yaml
-#
-import: toolbox/.toolbox/deps/toolbox/variant-lib/utils.yaml
 
 description: Toolbox management tasks
 
@@ -16,6 +14,8 @@ parameters:
   default: toolbox/bin
 
 tasks:
+  core:
+    import: toolbox/.toolbox/deps/toolbox/variant-lib/utils.yaml
   deps:
     tasks:
       install:
@@ -48,7 +48,7 @@ tasks:
 
       list:
         steps:
-        - task: exec
+        - task: core.exec
           arguments:
             cmd: |
               uniconf -c {{ .TOOLBOX_PROJECT_DIR }}/config/source/{{ .TOOLBOX_SETTINGS_FILE_NAME }} 2> /dev/null > {{ .TOOLBOX_PROJECT_DIR }}/config/rendered/{{ .TOOLBOX_SETTINGS_FILE_NAME }};
@@ -60,9 +60,9 @@ tasks:
     tasks:
       create:
         steps:
-        - task: config.process.dir
+        - task: core.config.process.dir
 
-        - task: exec
+        - task: core.exec
           arguments:
             cmd: |
               # Remove and recreate bin dir
@@ -86,7 +86,7 @@ tasks:
 
       list:
         steps:
-        - task: exec
+        - task: core.exec
           arguments:
             cmd: |
               # List "bin/*" tool executable scripts
@@ -98,7 +98,7 @@ tasks:
         - name: tool_name
           type: string
         steps:
-        - task: exec
+        - task: core.exec
           arguments:
             cmd: |
               # Show command definition
