@@ -11,8 +11,13 @@ config:
 
   libraries:
     params:
+      tool_dirs:
+        - toolbox
+        - toolbox/.toolbox/deps/toolbox
+      env:
+        VARIANT_LOG_LEVEL: info
+
       prefix: .toolbox
-      tools_dir: tools
       image: aroq/toolbox
       env:
         TOOLBOX_RUN_VARIANT: true

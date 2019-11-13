@@ -6,15 +6,6 @@ deps:
 from:
 - toolbox/.toolbox/deps/toolbox/config/toolbox.settings.yaml
 
-config:
-  libraries:
-    params:
-      tool_dirs:
-        - toolbox
-        - toolbox/.toolbox/deps/toolbox
-      env:
-        VARIANT_LOG_LEVEL: info
-
 tools:
   test:
     from:
