@@ -60,13 +60,11 @@ tasks:
     tasks:
       create:
         steps:
+        - task: config.process.dir
+
         - task: exec
           arguments:
             cmd: |
-              # Process config
-              mkdir -p {{ .TOOLBOX_PROJECT_DIR }}/config/rendered;
-              uniconf -c {{ .TOOLBOX_PROJECT_DIR }}/config/source/{{ .TOOLBOX_SETTINGS_FILE_NAME }} 2> /dev/null > {{ .TOOLBOX_PROJECT_DIR }}/config/rendered/{{ .TOOLBOX_SETTINGS_FILE_NAME }};
-
               # Remove and recreate bin dir
               rm -fR {{ .TOOLBOX_EXECUTABLES_DIR }};
               mkdir -p {{ .TOOLBOX_EXECUTABLES_DIR }};
