@@ -20,7 +20,7 @@ tasks:
     tasks:
       install:
         steps:
-        - task: exec
+        - task: core.exec
           arguments:
             title: Install deps
             cmd: |
