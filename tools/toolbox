@@ -66,23 +66,28 @@ tasks:
           arguments:
             cmd: |
               # Remove and recreate bin dir
-              rm -fR {{ .TOOLBOX_EXECUTABLES_DIR }};
-              mkdir -p {{ .TOOLBOX_EXECUTABLES_DIR }};
+              rm -fR toolbox/.toolbox/.tmp/bin;
+              mkdir -p toolbox/.toolbox/.tmp/bin;
 
               # Create bin dirs hierarchy
               yq r {{ .TOOLBOX_PROJECT_DIR }}/config/rendered/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | \
                 jq -r '.tools | to_entries | .[] | select(.key | contains("/")) | .key | capture("(?<dir>.*)\/.*") | .dir' | \
                 xargs -I "%" \
-                  sh -c "mkdir -p {{ .TOOLBOX_EXECUTABLES_DIR }}/%"
+                  sh -c "mkdir -p toolbox/.toolbox/.tmp/bin/%"
 
               # Create "bin/*" tool executable scripts
               yq r {{ .TOOLBOX_PROJECT_DIR }}/config/rendered/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | \
                 jq -r '.tools | to_entries | .[] | .key' | \
                 xargs -I "%" \
-                  sh -c "yq r {{ .TOOLBOX_PROJECT_DIR }}/config/rendered/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq '.tools | .[\"%\"]' | gomplate -f {{ .TOOLBOX_DIR }}/deps/toolbox/templates/bin/run.tpl -o {{ .TOOLBOX_EXECUTABLES_DIR }}/% --context task=stdin:///foo.yml; chmod a+x {{ .TOOLBOX_EXECUTABLES_DIR }}/%";
+                  sh -c "yq r {{ .TOOLBOX_PROJECT_DIR }}/config/rendered/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq '.tools | .[\"%\"]' | gomplate -f {{ .TOOLBOX_DIR }}/deps/toolbox/templates/bin/run.tpl -o toolbox/.toolbox/.tmp/bin/% --context task=stdin:///foo.yml; chmod a+x toolbox/.toolbox/.tmp/bin/%";
 
               # Remove tmp dir
               rm -fR .unipipe_temp;
+
+              # Replace old deps
+              rm -fR toolbox/bin
+              cp -fR toolbox/.toolbox/.tmp/bin toolbox
+              rm -fR toolbox/.toolbox/.tmp/bin
 
       list:
         steps:
