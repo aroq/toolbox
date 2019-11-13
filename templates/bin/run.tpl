@@ -17,7 +17,7 @@ export TOOLBOX_TOOL_DIRS="{{ join .task.tool_dirs "," }}"
 
 {{ if has .task "config_context_prefix" -}}
 if [ -z "${VARIANT_CONFIG_CONTEXT-}" ]; then
-  export VARIANT_CONFIG_CONTEXT="{{ join .task.config_context_prefix "," }}"
+export VARIANT_CONFIG_CONTEXT="{{ $l := reverse .task.config_context_prefix }}{{ join $l "," }}"
 else
   export VARIANT_CONFIG_CONTEXT="${VARIANT_CONFIG_CONTEXT},{{ join .task.config_context_prefix "," }}"
 fi
