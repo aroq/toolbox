@@ -11,8 +11,12 @@ config:
 
   libraries:
     params:
+      tool_dirs:
+        - toolbox/.toolbox/deps/toolbox
+      env:
+        VARIANT_LOG_LEVEL: info
+
       prefix: .toolbox
-      tools_dir: tools
       image: aroq/toolbox
       env:
         TOOLBOX_RUN_VARIANT: true
@@ -22,6 +26,9 @@ config:
         destination: toolbox
         source: github.com/aroq/toolbox//tools
       commands:
+        initialize:
+          params:
+            cmd: initialize
         toolbox:
           params:
             cmd: toolbox
@@ -47,6 +54,8 @@ config:
             params:
               cmd: release/deploy
 tools:
+  initialize:
+    from: config.libraries.toolbox.commands.initialize
   toolbox:
     from: config.libraries.toolbox.commands.toolbox
   template:

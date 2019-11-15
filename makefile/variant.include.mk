@@ -71,7 +71,7 @@ endif
 
 endif
 
-TEMP_DIR ?= $(TOOLBOX_DIR)/.tmp
+TEMP_DIR ?= $(TOOLBOX_PROJECT)/$(TOOLBOX_DIR)/.tmp
 
 BINDED_VARS_ROOT ?= .
 BINDED_VARS_TEMP_FILE ?= .vars.tmp
