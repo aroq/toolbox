@@ -10,7 +10,7 @@ tasks:
       default: ""
     - name: title
       type: string
-      default: "CMD"
+      default: "Shell command"
     - name: cmd
       type: string
       default: "pwd"
