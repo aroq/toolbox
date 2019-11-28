@@ -27,18 +27,6 @@ if [ -z ${TOOLBOX_RUN+x} ] && [ -z ${TOOLBOX_DOCKER_SKIP+x} ]; then
   fi
 fi
 
-# echo "TOOLBOX_DOCKER_SKIP after: ${TOOLBOX_DOCKER_SKIP}"
-
-# Load environment variables from .env file
-if [[ -f ".env" ]]; then
-  source ".env"
-fi
-
-# Load environment variables from  local git-ignored .env.local file
-if [[ -f ".env.local" ]]; then
-  source ".env.local"
-fi
-
 for i in $(echo "$TOOLBOX_TOOL_DIRS" | sed "s/,/ /g")
 do
   echo "$i/${CMD}"
