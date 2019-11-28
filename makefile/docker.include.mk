@@ -17,6 +17,8 @@ ifeq ($(TOOLBOX_DOCKER_SSH_FORWARD),true)
 ifeq ($(DETECTED_OS),OSX)
     # For OSX ssh-agent forwarding into Docker container - https://github.com/nardeas/ssh-agent.
     DOCKER_SSH_AUTH_SOCK_FORWARD_PARAMS ?= --volumes-from=ssh-agent -e SSH_AUTH_SOCK=/.ssh-agent/socket
+else ifeq ($(DETECTED_OS),LINUX)
+    DOCKER_SSH_AUTH_SOCK_FORWARD_PARAMS ?= --volumes-from=ssh-agent -e SSH_AUTH_SOCK=/.ssh-agent/socket
 else
     DOCKER_SSH_AUTH_SOCK_FORWARD_PARAMS ?=
 endif
