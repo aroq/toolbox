@@ -27,7 +27,7 @@ endif
 ifeq ($(DETECTED_OS),OSX)
     DOCKER_RUN_USER_GROUP_PARAMS ?=
 else ifeq ($(DETECTED_OS),LINUX)
-    DOCKER_RUN_USER_GROUP_PARAMS ?= -u $(id -u ${USER}):$(id -g ${USER})
+    DOCKER_RUN_USER_GROUP_PARAMS ?= -u $(shell id -u $${USER}):$(shell id -g $${USER})
 else
     DOCKER_RUN_USER_GROUP_PARAMS ?=
 endif
