@@ -66,11 +66,9 @@ endif
 	$(eval TOOLBOX_TOOL_DOCKER_IMAGE = $(if $(TOOLBOX_TOOL_DOCKER_IMAGE),$(TOOLBOX_TOOL_DOCKER_IMAGE),$(${ARG_IMAGE})))
 
 ifeq ("$(TOOLBOX_DEBUG)",true)
-	docker run --rm \
-		$(strip $(DOCKER_RUN_ARGS) $(DOCKER_RUN_MOUNT_VOLUME)) $(TOOLBOX_TOOL_DOCKER_IMAGE) sh -c '$(DOCKER_CMD)'
+	docker run $(strip $(DOCKER_RUN_ARGS) $(DOCKER_RUN_MOUNT_VOLUME)) $(TOOLBOX_TOOL_DOCKER_IMAGE) sh -c '$(DOCKER_CMD)'
 else
-	docker run --rm \
-		$(strip $(DOCKER_RUN_ARGS) $(DOCKER_RUN_MOUNT_VOLUME)) $(TOOLBOX_TOOL_DOCKER_IMAGE) sh -c '$(DOCKER_CMD)'
+	docker run $(strip $(DOCKER_RUN_ARGS) $(DOCKER_RUN_MOUNT_VOLUME)) $(TOOLBOX_TOOL_DOCKER_IMAGE) sh -c '$(DOCKER_CMD)'
 endif
 
 #######################################
