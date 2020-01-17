@@ -24,13 +24,13 @@ else
 endif
 endif
 
-ifeq ($(DETECTED_OS),OSX)
-    DOCKER_RUN_USER_GROUP_PARAMS ?=
-else ifeq ($(DETECTED_OS),LINUX)
-    DOCKER_RUN_USER_GROUP_PARAMS ?= -u $(shell id -u $${USER}):$(shell id -g $${USER})
-else
-    DOCKER_RUN_USER_GROUP_PARAMS ?=
-endif
+# ifeq ($(DETECTED_OS),OSX)
+    # DOCKER_RUN_USER_GROUP_PARAMS ?=
+# else ifeq ($(DETECTED_OS),LINUX)
+    # DOCKER_RUN_USER_GROUP_PARAMS ?= -u $(shell id -u $${USER}):$(shell id -g $${USER})
+# else
+    # DOCKER_RUN_USER_GROUP_PARAMS ?=
+# endif
 
 #######################################
 # docker.run - Execute docker run command with parameters
@@ -53,7 +53,7 @@ else
 	@VARIANT_LOG_LEVEL="debug"
 endif
 
-	$(eval DOCKER_RUN_ARGS += $(if $(DOCKER_RUN_USER_GROUP_PARAMS),$(DOCKER_RUN_USER_GROUP_PARAMS),))
+	# $(eval DOCKER_RUN_ARGS += $(if $(DOCKER_RUN_USER_GROUP_PARAMS),$(DOCKER_RUN_USER_GROUP_PARAMS),))
 	$(eval DOCKER_RUN_ARGS += $(if $(DOCKER_ENV_FILE),--env-file=$(DOCKER_ENV_FILE),))
 	$(eval DOCKER_RUN_ARGS += $(if $(DOCKER_ENV_FILE2),--env-file=$(DOCKER_ENV_FILE2),))
 	$(eval DOCKER_RUN_ARGS += $(if $(DOCKER_ENV_VARS),$(DOCKER_ENV_VARS),))
