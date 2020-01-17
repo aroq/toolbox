@@ -1,3 +1,21 @@
+Version 0.1.12:
+ - Add gpg symmetric tasks
+ - Update docker run for better behaviour in the linux-based environment
+ - Update docker run for better behaviour in the linux-based environment
+ - Update docker run for better behaviour in the linux-based environment
+ - Update docker run for better behaviour in the linux-based environment
+ - Update docker run for better behaviour in the linux-based environment
+ - Debug toolbox docker
+ - Update docker run for better behaviour in the linux-based environment
+ - Trigger
+ - Version bump to 0.1.11
+ - Remove .env file handling
+ - Version bump to 0.1.10
+ - Version bump to 0.1.11
+ - Remove .env file handling
+ - Add Linux ssh agent.
+ - Version bump to 0.1.10
+
 Version 0.1.11:
  - Remove .env file handling
 
