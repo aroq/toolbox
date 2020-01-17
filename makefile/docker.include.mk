@@ -68,7 +68,7 @@ endif
 ifeq ("$(TOOLBOX_DEBUG)",true)
 	docker run $(strip $(DOCKER_RUN_ARGS) $(DOCKER_RUN_MOUNT_VOLUME)) $(TOOLBOX_TOOL_DOCKER_IMAGE) sh -c '$(DOCKER_CMD)'
 else
-	docker run $(strip $(DOCKER_RUN_ARGS) $(DOCKER_RUN_MOUNT_VOLUME)) $(TOOLBOX_TOOL_DOCKER_IMAGE) sh -c '$(DOCKER_CMD)'
+	@docker run $(strip $(DOCKER_RUN_ARGS) $(DOCKER_RUN_MOUNT_VOLUME)) $(TOOLBOX_TOOL_DOCKER_IMAGE) sh -c '$(DOCKER_CMD)'
 endif
 
 #######################################
