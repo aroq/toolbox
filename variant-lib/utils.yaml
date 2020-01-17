@@ -145,16 +145,49 @@ tasks:
 
   gpg:
     bindParamsFromEnv: true
-    parameters:
-    - name: gpg_key_file
-      type: string
     tasks:
       import_key:
+        parameters:
+        - name: gpg_key_file
+          type: string
         steps:
         - task: core.exec
           arguments:
             title: "GPG :: Import key"
             cmd: |
               gpg --batch --import {{ .gpg_key_file }}
+
+      symmetric:
+        parameters:
+        - name: TOOLBOX_GPG_SECRET_PASSPHRASE
+          type: string
+        tasks:
+          encrypt:
+            parameters:
+            - name: input
+              type: string
+            - name: output
+              type: string
+            steps:
+            - task: core.exec
+              arguments:
+                title: "GPG :: Symmetric :: Encrypt file"
+                cmd: |
+                  gpg --symmetric --cipher-algo AES256 {{ .input }}
+
+          decrypt:
+            parameters:
+            - name: input
+              type: string
+            - name: output
+              type: string
+            steps:
+            - task: core.exec
+              arguments:
+                title: "GPG :: Symmetric :: Decrypt file"
+                cmd: |
+                  gpg --quiet --batch --yes --decrypt --passphrase="{{ .TOOLBOX_GPG_SECRET_PASSPHRASE }}" \
+                    --output {{ .output }} {{ .input }};
+
 
 
