@@ -45,16 +45,16 @@ else
 	@VARIANT_LOG_LEVEL="debug"
 endif
 
-$(eval DOCKER_RUN_ARGS += $(if $(DOCKER_ENV_FILE),--env-file=$(DOCKER_ENV_FILE),))
-$(eval DOCKER_RUN_ARGS += $(if $(DOCKER_ENV_FILE2),--env-file=$(DOCKER_ENV_FILE2),))
-$(eval DOCKER_RUN_ARGS += $(if $(DOCKER_ENV_VARS),$(DOCKER_ENV_VARS),))
-$(eval DOCKER_RUN_ARGS += $(if $(DOCKER_SSH_AUTH_SOCK_FORWARD_PARAMS),$(DOCKER_SSH_AUTH_SOCK_FORWARD_PARAMS),))
+	$(eval DOCKER_RUN_ARGS += $(if $(DOCKER_ENV_FILE),--env-file=$(DOCKER_ENV_FILE),))
+	$(eval DOCKER_RUN_ARGS += $(if $(DOCKER_ENV_FILE2),--env-file=$(DOCKER_ENV_FILE2),))
+	$(eval DOCKER_RUN_ARGS += $(if $(DOCKER_ENV_VARS),$(DOCKER_ENV_VARS),))
+	$(eval DOCKER_RUN_ARGS += $(if $(DOCKER_SSH_AUTH_SOCK_FORWARD_PARAMS),$(DOCKER_SSH_AUTH_SOCK_FORWARD_PARAMS),))
 
-$(eval ARG_IMAGE = $(shell echo "$(FIRST_ARG)_IMAGE" | tr '[:lower:]' '[:upper:]'))
-$(eval ARG_IMAGE = $(subst /,_,$(ARG_IMAGE)))
-$(eval ARG_IMAGE = $(subst .,_,$(ARG_IMAGE)))
+	$(eval ARG_IMAGE = $(shell echo "$(FIRST_ARG)_IMAGE" | tr '[:lower:]' '[:upper:]'))
+	$(eval ARG_IMAGE = $(subst /,_,$(ARG_IMAGE)))
+	$(eval ARG_IMAGE = $(subst .,_,$(ARG_IMAGE)))
 
-$(eval TOOLBOX_TOOL_DOCKER_IMAGE = $(if $(TOOLBOX_TOOL_DOCKER_IMAGE),$(TOOLBOX_TOOL_DOCKER_IMAGE),$(${ARG_IMAGE})))
+	$(eval TOOLBOX_TOOL_DOCKER_IMAGE = $(if $(TOOLBOX_TOOL_DOCKER_IMAGE),$(TOOLBOX_TOOL_DOCKER_IMAGE),$(${ARG_IMAGE})))
 
 ifeq ("$(TOOLBOX_DEBUG)",true)
 	docker run $(strip $(DOCKER_RUN_ARGS) $(DOCKER_RUN_MOUNT_VOLUME)) $(TOOLBOX_TOOL_DOCKER_IMAGE) sh -c '$(DOCKER_CMD)'
