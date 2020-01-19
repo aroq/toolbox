@@ -23,8 +23,17 @@ else
 fi
 {{ end -}}
 
+{{ if has .task "config_dir_prefix" -}}
+if [ -z "${VARIANT_CONFIG_DIR-}" ]; then
+export VARIANT_CONFIG_DIR="{{ $l := reverse .task.config_dir_prefix }}{{ join $l "," }}"
+else
+  export VARIANT_CONFIG_DIR="${VARIANT_CONFIG_DIR},{{ $l := reverse .task.config_dir_prefix }}{{ join $l "," }}"
+fi
+{{ end -}}
+
 export TOOLBOX_TOOL_DOCKER_IMAGE=${TOOLBOX_TOOL_DOCKER_IMAGE:-{{ .task.image }}}
 
 
 eval "toolbox/.toolbox/deps/toolbox/run tools/{{ .task.cmd }} $*"
+
 
