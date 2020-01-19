@@ -1,3 +1,6 @@
+Version 0.1.18:
+ - Update run template: add config_dir_prefix handling
+
 Version 0.1.17:
  - Add make silent option
 
