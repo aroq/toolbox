@@ -13,9 +13,6 @@ config:
     params:
       tool_dirs:
         - toolbox/.toolbox/deps/toolbox
-      env:
-        VARIANT_LOG_LEVEL: info
-
       prefix: .toolbox
       image: aroq/toolbox
       env:
