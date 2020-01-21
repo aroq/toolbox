@@ -1,3 +1,6 @@
+Version 0.1.19:
+ - Remove cicd settings
+
 Version 0.1.18:
  - Update run template: add config_dir_prefix handling
 
