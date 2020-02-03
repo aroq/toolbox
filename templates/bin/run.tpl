@@ -1,16 +1,12 @@
 #!/usr/bin/env bash
 
-if [ "${TOOLBOX_DEBUG}" == "true" ]; then
-  set -x
-fi
-
 {{ if has .task "env" -}}
 {{- range $k, $v := .task.env -}}
 {{- if $v }}
 export {{ $k }}=${ {{- $k }}:-{{ $v }}}
 {{ end -}}
 {{ end -}}
-export DOCKER_ENV_VARS="-e {{ $s := coll.Keys .task.env }}{{ join $s " -e " }}"
+export TOOLBOX_DOCKER_ENV_VARS="-e {{ $s := coll.Keys .task.env }}{{ join $s " -e " }}"
 {{ end -}}
 
 export TOOLBOX_TOOL_DIRS="toolbox,{{ $l := reverse .task.tool_dirs }}{{ join $l "," }}"
@@ -34,6 +30,4 @@ fi
 export TOOLBOX_TOOL_DOCKER_IMAGE=${TOOLBOX_TOOL_DOCKER_IMAGE:-{{ .task.image }}}
 
 
-eval "toolbox/.toolbox/deps/toolbox/run tools/{{ .task.cmd }} $*"
-
-
+eval "toolbox/.toolbox/deps/toolwrap/run tools/{{ .task.cmd }} $*"
