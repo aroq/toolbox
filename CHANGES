@@ -1,3 +1,6 @@
+Version 0.1.21:
+ - Fix SSH forward for Docker on Linux
+
 Version 0.1.20:
  - Fix env
 
