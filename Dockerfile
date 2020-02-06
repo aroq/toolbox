@@ -40,5 +40,5 @@ RUN curl --fail -sSL -o fd.tar.gz https://github.com/sharkdp/fd/releases/downloa
     && rm -fR fd-v${FD_VERSION}-x86_64-unknown-linux-musl \
     && chmod +x /usr/local/bin/fd
 
-RUN mkdir -p /usr/toolbox/deps/toolbox
-COPY ./* /usr/toolbox/deps/toolbox
+RUN mkdir -p /toolbox
+COPY ./* /toolbox
