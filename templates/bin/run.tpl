@@ -35,7 +35,12 @@ else
 fi
 {{ end -}}
 
+{{ if has .task "run_wrapper_path" -}}
+exec {{ .task.run_wrapper_path }} tools/{{ .task.cmd }} "$@"
+else
+exec toolbox/.toolbox/deps/toolbox-variant/run tools/{{ .task.cmd }} "$@"
+{{ end -}}
+
 export TOOLBOX_TOOL_DOCKER_IMAGE=${TOOLBOX_TOOL_DOCKER_IMAGE:-{{ .task.image }}}
 
 
-exec toolbox/.toolbox/deps/toolbox-variant/run tools/{{ .task.cmd }} "$@"
