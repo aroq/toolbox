@@ -6,4 +6,4 @@ set -euo pipefail
 # Default varable values
 PARAM1=${PARAM1:-default}
 
-echo "PARAM1: {{ .PARAM1 }}"
+echo "PARAM1: ${PARAM1}"
