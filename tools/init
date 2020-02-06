@@ -4,6 +4,7 @@
 set -euo pipefail
 
 # Default varable values
+set -x
 TOOLBOX_DEPS_DIR=${TOOLBOX_DEPS_TOOLBOX_DIR:-toolbox/.toolbox/deps}
 TOOLBOX_BOILERPLATE_ADDRESS=${TOOLBOX_BOILERPLATE_ADDRESS:-github.com/aroq/toolbox-boilerplate?ref=v0.1.1}
 
@@ -15,3 +16,4 @@ rsync -r --ignore-existing "${TOOLBOX_DEPS_DIR}/toolbox-boilerplate" toolbox/
 rm -fR "${TOOLBOX_DEPS_DIR}/toolbox-boilerplate"
 
 /toolbox/tools/toolbox cmd create
+set +x
