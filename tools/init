@@ -5,7 +5,7 @@ set -euo pipefail
 
 # Default varable values
 TOOLBOX_DEPS_DIR=${TOOLBOX_DEPS_TOOLBOX_DIR:-toolbox/.toolbox/deps}
-TOOLBOX_BOILERPLATE_ADDRESS=${TOOLBOX_BOILERPLATE_ADDRESS:-github.com/aroq/toolbox-variant?ref=v0.1.2}
+TOOLBOX_BOILERPLATE_ADDRESS=${TOOLBOX_BOILERPLATE_ADDRESS:-github.com/aroq/toolbox-boilerplate?ref=v0.1.1}
 
 go-getter github.com/aroq/toolwrap?ref=v0.1.8 "${TOOLBOX_DEPS_DIR}/toolwrap"
 go-getter github.com/aroq/toolbox-variant?ref=v0.1.2 "${TOOLBOX_DEPS_DIR}/toolbox-variant"
