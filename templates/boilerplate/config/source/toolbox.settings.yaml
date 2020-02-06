@@ -2,11 +2,8 @@ deps:
   toolbox: github.com/aroq/toolbox
 
 from:
-# Make sure you have proper deps dir here
-- toolbox/.toolbox/deps/toolbox/config/toolbox.settings.yaml
-tools:
-  test:
-    from:
-    - config.libraries
-    cmd: test_variant
+- toolbox/config/toolbox.default.settings.yaml
 
+tools:
+  test_variant:
+    cmd: test_variant
