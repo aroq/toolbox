@@ -15,7 +15,8 @@ parameters:
 
 tasks:
   core:
-    import: toolbox/.toolbox/deps/toolbox/variant-lib/utils.yaml
+    import: github.com/aroq/toolbox?ref=v2.1//variant-lib/utils.yaml
+
   deps:
     tasks:
       install:
