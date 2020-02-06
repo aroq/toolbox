@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+# Set strict bash mode
+set -euo pipefail
+
+# Default varable values
+TOOLBOX_DEPS_DIR=${TOOLBOX_DEPS_TOOLBOX_DIR:-toolbox/.toolbox/deps}
+
+mkdir -p "${TOOLBOX_DEPS_DIR}/toolbox"
+
+go-getter github.com/aroq/toolwrap "${TOOLBOX_DEPS_DIR}/toolwrap"
+
+rsync -r --ignore-existing /usr/toolbox/deps/toolbox "${TOOLBOX_DEPS_DIR}"
+rsync -r --ignore-existing "${TOOLBOX_DEPS_DIR}/toolbox/templates/boilerplate/." toolbox/

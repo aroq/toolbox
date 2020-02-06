@@ -1,6 +1,9 @@
-#!/usr/bin/env variant
-# vi: ft=yaml
+#!/usr/bin/env bash
 
-steps:
-- script: |
-    echo "test"
+# Set strict bash mode
+set -euo pipefail
+
+# Default varable values
+PARAM1=${PARAM1:-default}
+
+echo "PARAM1: {{ .PARAM1 }}"
