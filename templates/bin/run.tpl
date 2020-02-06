@@ -37,7 +37,7 @@ fi
 
 {{ if has .task "run_wrapper_path" -}}
 exec {{ .task.run_wrapper_path }} tools/{{ .task.cmd }} "$@"
-else
+{{ else }}
 exec toolbox/.toolbox/deps/toolbox-variant/run tools/{{ .task.cmd }} "$@"
 {{ end -}}
 
