@@ -10,3 +10,5 @@ go-getter github.com/aroq/toolwrap?ref=v0.1.8 "${TOOLBOX_DEPS_DIR}/toolwrap"
 go-getter github.com/aroq/toolbox-variant?ref=v0.1.2 "${TOOLBOX_DEPS_DIR}/toolbox-variant"
 
 rsync -r --ignore-existing "/toolbox/templates/boilerplate/." toolbox/
+
+/toolbox/tools/toolbox cmd create

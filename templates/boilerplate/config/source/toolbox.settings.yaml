@@ -6,4 +6,5 @@ from:
 
 tools:
   test_variant:
+    from: config.tools
     cmd: test_variant
