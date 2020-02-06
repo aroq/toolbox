@@ -9,7 +9,7 @@ TOOLBOX_BOILERPLATE_ADDRESS=${TOOLBOX_BOILERPLATE_ADDRESS:-github.com/aroq/toolb
 
 go-getter github.com/aroq/toolwrap?ref=v0.1.8 "${TOOLBOX_DEPS_DIR}/toolwrap"
 go-getter github.com/aroq/toolbox-variant?ref=v0.1.2 "${TOOLBOX_DEPS_DIR}/toolbox-variant"
-go-getter "${TOOLBOX_BOILERPLATE_ADDRESS}" "${TOOLBOX_BOILERPLATE_ADDRESS}/toolbox-boilerplate"
+go-getter "${TOOLBOX_BOILERPLATE_ADDRESS}" "${TOOLBOX_DEPS_DIR}/toolbox-boilerplate"
 
 rsync -r --ignore-existing "${TOOLBOX_DEPS_DIR}/toolbox-boilerplate" toolbox/
 rm -fR "${TOOLBOX_DEPS_DIR}/toolbox-boilerplate"
