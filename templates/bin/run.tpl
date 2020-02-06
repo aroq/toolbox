@@ -13,7 +13,11 @@ export {{ $k }}=${ {{- $k }}:-{{ $v }}}
 export DOCKER_ENV_VARS="-e {{ $s := coll.Keys .task.env }}{{ join $s " -e " }}"
 {{ end -}}
 
+{{ if has .task "tool_dirs" -}}
 export TOOLBOX_TOOL_DIRS="toolbox,{{ $l := reverse .task.tool_dirs }}{{ join $l "," }}"
+else
+export TOOLBOX_TOOL_DIRS="toolbox"
+{{ end -}}
 
 {{ if has .task "config_context_prefix" -}}
 if [ -z "${VARIANT_CONFIG_CONTEXT-}" ]; then
