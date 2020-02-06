@@ -38,4 +38,4 @@ fi
 export TOOLBOX_TOOL_DOCKER_IMAGE=${TOOLBOX_TOOL_DOCKER_IMAGE:-{{ .task.image }}}
 
 
-eval "toolbox/.toolbox/deps/toolbox-variant/run tools/{{ .task.cmd }} $*"
+exec "toolbox/.toolbox/deps/toolbox-variant/run tools/{{ .task.cmd }}" "$@"
