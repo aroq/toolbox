@@ -1,3 +1,7 @@
+deps:
+  toolwrap: github.com/aroq/toolwrap?ref=v0.1.8
+  toolbox-variant: github.com/aroq/toolwrap?ref=v0.1.2
+
 config:
   environments:
     dev:

@@ -13,3 +13,6 @@ go-getter github.com/aroq/toolbox-variant?ref=v0.1.2 "${TOOLBOX_DEPS_DIR}/toolbo
 
 rsync -r --ignore-existing /usr/toolbox/deps/toolbox "${TOOLBOX_DEPS_DIR}"
 rsync -r --ignore-existing "${TOOLBOX_DEPS_DIR}/toolbox/templates/boilerplate/." toolbox/
+
+toolbox/.toolbox/deps/toolbox/tools/toolbox cmd create
+
