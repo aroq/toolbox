@@ -1,20 +1,30 @@
 #!/usr/bin/env variant
 # vi: ft=yaml
-#
-import: /usr/toolbox/deps/toolbox/variant-lib/utils.yaml
+
+import: .toolbox/core/variant-lib/utils.yaml
 
 description: Toolbox initialization
+
+parameters:
+- name: TOOLBOX_DEPS_DIR
+  default: toolbox/.toolbox/deps
+- name: TOOLBOX_BOILERPLATE_ADDRESS
+  default: github.com/aroq/toolbox-boilerplate?ref=v0.1.3
 
 steps:
 - task: exec
   arguments:
     title: Toolbox initialize
     cmd: |
-      mkdir -p toolbox/.toolbox/deps/toolbox
-      rsync -r --ignore-existing /usr/toolbox/deps/toolbox toolbox/.toolbox/deps
-      rsync -r --ignore-existing toolbox/.toolbox/deps/toolbox/templates/boilerplate/. toolbox/
+      go-getter github.com/aroq/toolwrap?ref=v0.1.8 "{{ .TOOLBOX_DEPS_DIR }}/toolwrap"
+      go-getter github.com/aroq/toolbox-variant?ref=v0.1.2 "{{ .TOOLBOX_DEPS_DIR }}/toolbox-variant"
+      go-getter "{{ .TOOLBOX_BOILERPLATE_ADDRESS }}" "{{ .TOOLBOX_DEPS_DIR }}/toolbox-boilerplate"
+
+      rsync -r --ignore-existing "{{ .TOOLBOX_DEPS_DIR }}/toolbox-boilerplate/." toolbox/
+      rm -fR "{{ .TOOLBOX_DEPS_DIR }}/toolbox-boilerplate"
+
 - task: exec
   arguments:
     title: Toolbox initialize
     cmd: |
-      toolbox/.toolbox/deps/toolbox/tools/toolbox cmd create
+      /toolbox/tools/toolbox cmd create
