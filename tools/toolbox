@@ -16,8 +16,8 @@ parameters:
 tasks:
   core:
     import: github.com/aroq/toolbox?ref=v2.1//variant-lib/utils.yaml
-    config:
-      import: github.com/aroq/toolbox?ref=v2.1//variant-lib/utils.config.yaml
+  config:
+    import: github.com/aroq/toolbox?ref=v2.1//variant-lib/utils.config.yaml
 
   deps:
     tasks:
@@ -63,7 +63,7 @@ tasks:
     tasks:
       create:
         steps:
-        - task: core.config.config.process.dir
+        - task: config.config.process.dir
 
         - task: core.exec
           arguments:
