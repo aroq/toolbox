@@ -25,7 +25,7 @@ steps:
       go-getter "{{ .TOOLBOX_BOILERPLATE_ADDRESS }}" "{{ .TOOLBOX_DEPS_DIR }}/toolbox-boilerplate"
       rm -fR "{{ .TOOLBOX_BOILERPLATE_ADDRESS }}" "{{ .TOOLBOX_DEPS_DIR }}/toolbox-boilerplate/.git"
 
-      rsync -r --ignore=".git" --ignore-existing "{{ .TOOLBOX_DEPS_DIR }}/toolbox-boilerplate/." toolbox/
+      rsync -r --exclude=".git" --ignore-existing "{{ .TOOLBOX_DEPS_DIR }}/toolbox-boilerplate/." toolbox/
       rm -fR "{{ .TOOLBOX_DEPS_DIR }}/toolbox-boilerplate"
 
 - task: exec
