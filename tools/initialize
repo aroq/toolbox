@@ -17,10 +17,15 @@ steps:
     title: Toolbox initialize
     cmd: |
       go-getter github.com/aroq/toolwrap?ref=v0.1.8 "{{ .TOOLBOX_DEPS_DIR }}/toolwrap"
-      go-getter github.com/aroq/toolbox-variant?ref=v0.1.2 "{{ .TOOLBOX_DEPS_DIR }}/toolbox-variant"
-      go-getter "{{ .TOOLBOX_BOILERPLATE_ADDRESS }}" "{{ .TOOLBOX_DEPS_DIR }}/toolbox-boilerplate"
+      rm -fR "{{ .TOOLBOX_DEPS_DIR }}/toolwrap/.git"
 
-      rsync -r --ignore-existing "{{ .TOOLBOX_DEPS_DIR }}/toolbox-boilerplate/." toolbox/
+      go-getter github.com/aroq/toolbox-variant?ref=v0.1.2 "{{ .TOOLBOX_DEPS_DIR }}/toolbox-variant"
+      rm -fR "{{ .TOOLBOX_DEPS_DIR }}/toolbox-variant/.git"
+
+      go-getter "{{ .TOOLBOX_BOILERPLATE_ADDRESS }}" "{{ .TOOLBOX_DEPS_DIR }}/toolbox-boilerplate"
+      rm -fR "{{ .TOOLBOX_BOILERPLATE_ADDRESS }}" "{{ .TOOLBOX_DEPS_DIR }}/toolbox-boilerplate/.git"
+
+      rsync -r --ignore=".git" --ignore-existing "{{ .TOOLBOX_DEPS_DIR }}/toolbox-boilerplate/." toolbox/
       rm -fR "{{ .TOOLBOX_DEPS_DIR }}/toolbox-boilerplate"
 
 - task: exec
