@@ -15,7 +15,7 @@ export DOCKER_ENV_VARS="-e {{ $s := coll.Keys .task.env }}{{ join $s " -e " }}"
 
 {{ if has .task "tool_dirs" -}}
 export TOOLBOX_TOOL_DIRS="toolbox,{{ $l := reverse .task.tool_dirs }}{{ join $l "," }}"
-else
+{{ else }}
 export TOOLBOX_TOOL_DIRS="toolbox"
 {{ end -}}
 
