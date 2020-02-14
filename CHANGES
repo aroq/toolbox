@@ -1,3 +1,40 @@
+Version 0.2.0:
+ - Fix bug in run template
+ - Change import in toolbox command
+ - Change import in config command
+ - Refactor utils & tasks
+ - Remove makefile, bin & run as moved to other repos or not needed
+ - Remove secret tasks from variant-lib
+ - Fix rsync command in initialize task
+ - Update init procedure
+ - Update import for tools
+ - Update import for tools
+ - Fix run template exec
+ - Fix else in run template
+ - Add run_wrapper_path to run template
+ - Fix init cmd rsync bug
+ - Update init cmd
+ - Fix boilerplate address
+ - Fix boilerplate address
+ - Trigger
+ - Move boilerplate into separate repo
+ - Add defaut settings into boiler template
+ - Add cmd create into init
+ - Update boilerplate template
+ - Change eval to exec in run template
+ - Update run template
+ - Update path in cmd command
+ - Update import for cmd command
+ - Remove .toolbox.makefile.init from boilerplate
+ - Fix wrong para in test command
+ - Update /toolbox dir for init command
+ - Update toolbox dir in Dockerfile
+ - Update init command
+ - Update init commands
+ - Update dep versions
+ - Update dep versions
+ - Update init
+
 Version 0.1.21:
  - Fix SSH forward for Docker on Linux
 
