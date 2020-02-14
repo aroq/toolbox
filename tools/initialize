@@ -9,13 +9,15 @@ parameters:
 - name: TOOLBOX_DEPS_DIR
   default: toolbox/.toolbox/deps
 - name: TOOLBOX_BOILERPLATE_ADDRESS
-  default: github.com/aroq/toolbox-boilerplate?ref=v0.1.3
+  default: github.com/aroq/toolbox-boilerplate?ref=v0.1.4
 
 steps:
 - task: exec
   arguments:
     title: Toolbox initialize
     cmd: |
+      rm -fR tooolbox/.toolbox/deps
+
       go-getter github.com/aroq/toolwrap?ref=v0.1.8 "{{ .TOOLBOX_DEPS_DIR }}/toolwrap"
       rm -fR "{{ .TOOLBOX_DEPS_DIR }}/toolwrap/.git"
 
