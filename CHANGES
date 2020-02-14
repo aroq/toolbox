@@ -1,3 +1,6 @@
+Version 0.2.1:
+ - Update boilerplate version to v0.1.4
+
 Version 0.2.0:
  - Fix bug in run template
  - Change import in toolbox command
