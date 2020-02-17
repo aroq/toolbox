@@ -41,7 +41,7 @@ RUN curl --fail -sSL -o fd.tar.gz https://github.com/sharkdp/fd/releases/downloa
     && chmod +x /usr/local/bin/fd
 
 RUN mkdir -p /toolbox
-COPY tools /toolbox
-COPY variant-lib /toolbox
-COPY templates /toolbox
-COPY config /toolbox
+COPY tools /toolbox/tools
+COPY variant-lib /toolbox/variant-lib
+COPY templates /toolbox/templates
+COPY config /toolbox/config
