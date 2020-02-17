@@ -117,10 +117,6 @@ tasks:
     parameters:
     - name: TOOLBOX_DEPS_DIR
       default: toolbox/.toolbox/deps
-    # - name: TOOLBOX_TOOLWRAP_ADDRESS
-      # default: github.com/aroq/toolwrap?ref=v0.1.8
-    # - name: TOOLBOX_VARIANT_ADDRESS
-      # default: github.com/aroq/toolbox-variant?ref=v0.1.3
     - name: TOOLBOX_BOILERPLATE_ADDRESS
       default: github.com/aroq/toolbox-boilerplate?ref=v0.1.7
     steps:
@@ -129,12 +125,6 @@ tasks:
         title: Toolbox initialize
         cmd: |
           # rm -fR toolbox/.toolbox/deps
-
-          # go-getter {{ .TOOLBOX_TOOLWRAP_ADDRESS }} "{{ .TOOLBOX_DEPS_DIR }}/toolwrap"
-          # rm -fR "{{ .TOOLBOX_DEPS_DIR }}/toolwrap/.git"
-
-          # go-getter {{ .TOOLBOX_VARIANT_ADDRESS }} "{{ .TOOLBOX_DEPS_DIR }}/toolbox-variant"
-          # rm -fR "{{ .TOOLBOX_DEPS_DIR }}/toolbox-variant/.git"
 
           go-getter {{ .TOOLBOX_BOILERPLATE_ADDRESS }} "{{ .TOOLBOX_DEPS_DIR }}/toolbox-boilerplate"
           rm -fR "{{ .TOOLBOX_DEPS_DIR }}/toolbox-boilerplate/.git"
