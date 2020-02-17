@@ -98,7 +98,7 @@ tasks:
           arguments:
             cmd: |
               # List "bin/*" tool executable scripts
-              yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | \
+              yq r {{ .TOOLBOX_PROJECT_DIR }}/config/rendered/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | \
                 jq -r '.tools'
 
       show:
@@ -110,8 +110,9 @@ tasks:
           arguments:
             cmd: |
               # Show command definition
-              yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | \
+              yq r {{ .TOOLBOX_PROJECT_DIR }}/config/rendered/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | \
                 jq -r '.tools.{{ .tool_name }}'
+
   init:
     parameters:
     - name: TOOLBOX_DEPS_DIR
@@ -138,7 +139,7 @@ tasks:
           go-getter {{ .TOOLBOX_BOILERPLATE_ADDRESS }} "{{ .TOOLBOX_DEPS_DIR }}/toolbox-boilerplate"
           rm -fR "{{ .TOOLBOX_DEPS_DIR }}/toolbox-boilerplate/.git"
 
-          rsync -r --exclude=".git" --ignore-existing "{{ .TOOLBOX_DEPS_DIR }}/toolbox-boilerplate/." toolbox/
+          rsync -r --exclude=".git" --exclude="CHANGES" --exclude="LICENSE" --exclude="VERSION" --ignore-existing "{{ .TOOLBOX_DEPS_DIR }}/toolbox-boilerplate/." toolbox/
           rm -fR "{{ .TOOLBOX_DEPS_DIR }}/toolbox-boilerplate"
 
     - task: cmd.create
