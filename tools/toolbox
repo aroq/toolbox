@@ -116,6 +116,10 @@ tasks:
     parameters:
     - name: TOOLBOX_DEPS_DIR
       default: toolbox/.toolbox/deps
+    - name: TOOLBOX_TOOLWRAP_ADDRESS
+      default: github.com/aroq/toolwrap?ref=v0.1.8
+    - name: TOOLBOX_VARIANT_ADDRESS
+      default: github.com/aroq/toolbox-variant?ref=v0.1.2
     - name: TOOLBOX_BOILERPLATE_ADDRESS
       default: github.com/aroq/toolbox-boilerplate?ref=v0.1.5
     steps:
@@ -125,14 +129,14 @@ tasks:
         cmd: |
           rm -fR tooolbox/.toolbox/deps
 
-          go-getter github.com/aroq/toolwrap?ref=v0.1.8 "{{ .TOOLBOX_DEPS_DIR }}/toolwrap"
+          go-getter {{ .TOOLBOX_TOOLWRAP_ADDRESS }} "{{ .TOOLBOX_DEPS_DIR }}/toolwrap"
           rm -fR "{{ .TOOLBOX_DEPS_DIR }}/toolwrap/.git"
 
-          go-getter github.com/aroq/toolbox-variant?ref=v0.1.2 "{{ .TOOLBOX_DEPS_DIR }}/toolbox-variant"
+          go-getter {{ .TOOLBOX_VARIANT_ADDRESS }} "{{ .TOOLBOX_DEPS_DIR }}/toolbox-variant"
           rm -fR "{{ .TOOLBOX_DEPS_DIR }}/toolbox-variant/.git"
 
-          go-getter "{{ .TOOLBOX_BOILERPLATE_ADDRESS }}" "{{ .TOOLBOX_DEPS_DIR }}/toolbox-boilerplate"
-          rm -fR "{{ .TOOLBOX_BOILERPLATE_ADDRESS }}" "{{ .TOOLBOX_DEPS_DIR }}/toolbox-boilerplate/.git"
+          go-getter {{ .TOOLBOX_BOILERPLATE_ADDRESS }} "{{ .TOOLBOX_DEPS_DIR }}/toolbox-boilerplate"
+          rm -fR "{{ .TOOLBOX_DEPS_DIR }}/toolbox-boilerplate/.git"
 
           rsync -r --exclude=".git" --ignore-existing "{{ .TOOLBOX_DEPS_DIR }}/toolbox-boilerplate/." toolbox/
           rm -fR "{{ .TOOLBOX_DEPS_DIR }}/toolbox-boilerplate"

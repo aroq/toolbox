@@ -4,24 +4,15 @@
 
 1. Get sample project files:
 ```
-docker run --rm -t -v "$(pwd)":"$(pwd)" -w "$(pwd)" aroq/toolbox sh -c "go-getter github.com/aroq/toolbox//test/tool temp"
+docker run --rm -it -v "$(pwd)":"$(pwd)" -w "$(pwd)" aroq/toolbox:0.2.7 init
 ```
 
-2. Go into new project directory:
+2. Try commands:
 ```
-cd temp
-```
-
-3. Init toolbox:
-```
-TOOLBOX_INIT="1" make init
-```
-
-4. Try commands:
-```
-bin/test
+toolbox/bin/test_variant
 ```
 
 ```
-K6_HOSTNAME="github.com" bin/k6 --k6-iterations=3
+toolbox/bin/test
 ```
+

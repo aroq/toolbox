@@ -9,8 +9,6 @@ parameters:
   default: toolbox/config/source
 - name: TOOLBOX_CONFIG_RENDERED_DIR
   default: toolbox/config/rendered
-# - name: TOOLBOX_CONFIG_DIR
-  # default: toolbox/config
 - name: TOOLBOX_CONFIG_TEMPLATES_DIR
   default: toolbox/config/templates
 
