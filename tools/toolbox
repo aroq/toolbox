@@ -120,7 +120,7 @@ tasks:
     - name: TOOLBOX_TOOLWRAP_ADDRESS
       default: github.com/aroq/toolwrap?ref=v0.1.8
     - name: TOOLBOX_VARIANT_ADDRESS
-      default: github.com/aroq/toolbox-variant?ref=v0.1.2
+      default: github.com/aroq/toolbox-variant?ref=v0.1.3
     - name: TOOLBOX_BOILERPLATE_ADDRESS
       default: github.com/aroq/toolbox-boilerplate?ref=v0.1.6
     steps:
