@@ -1,3 +1,6 @@
+Version 0.1.5:
+ - Fix toolbox init cmd params
+
 Version 0.2.4:
  - Refactor tools into single toolbox tool
 
