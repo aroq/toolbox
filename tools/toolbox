@@ -118,7 +118,7 @@ tasks:
     - name: TOOLBOX_DEPS_DIR
       default: toolbox/.toolbox/deps
     - name: TOOLBOX_BOILERPLATE_ADDRESS
-      default: github.com/aroq/toolbox-boilerplate?ref=v0.1.7
+      default: github.com/aroq/toolbox-boilerplate?ref=v0.1.8
     steps:
     - task: core.exec
       arguments:
