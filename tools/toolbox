@@ -113,6 +113,11 @@ tasks:
               yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | \
                 jq -r '.tools.{{ .tool_name }}'
   init:
+    parameters:
+    - name: TOOLBOX_DEPS_DIR
+      default: toolbox/.toolbox/deps
+    - name: TOOLBOX_BOILERPLATE_ADDRESS
+      default: github.com/aroq/toolbox-boilerplate?ref=v0.1.4
     steps:
     - task: core.exec
       arguments:
