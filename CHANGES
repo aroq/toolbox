@@ -1,3 +1,8 @@
+Version 0.2.11:
+ - Update boilerplate to v0.1.8
+ - Update init command to use deps install
+ - Update init command to use deps install
+
 Version 0.2.10:
  - Update boilerplate to v0.1.7
  - Update toolbox-variant version to v0.1.3
