@@ -1,3 +1,6 @@
+Version 0.2.6:
+ - Fix config tasks
+
 Version 0.2.5:
  - Version bump to 0.1.5
  - Fix toolbox init cmd params
