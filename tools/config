@@ -3,9 +3,9 @@
 
 tasks:
   core:
-    import: github.com/aroq/toolbox?ref=v2.1//variant-lib/utils.yaml
+    import: /toolbox/variant-lib/utils.yaml
   config:
-    import: github.com/aroq/toolbox?ref=v2.1//variant-lib/utils.config.yaml
+    import: /toolbox/variant-lib/utils.config.yaml
 
 tasks:
   process:
