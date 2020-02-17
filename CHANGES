@@ -1,3 +1,7 @@
+Version 0.2.9:
+ - Update boilerplate to v0.1.6
+ - Update cmd/* commands
+
 Version 0.2.8:
  - Update init & readme
 
