@@ -16,7 +16,7 @@ parameters:
 tasks:
   core:
     import: /toolbox/variant-lib/utils.yaml
-  config:
+  conf:
     import: /toolbox/variant-lib/utils.config.yaml
 
   deps:
@@ -63,7 +63,7 @@ tasks:
     tasks:
       create:
         steps:
-        - task: config.config.process.dir
+        - task: conf.process.dir
 
         - task: core.exec
           arguments:
@@ -143,4 +143,4 @@ tasks:
     tasks:
       process:
         steps:
-        - task: config.config.process.dir
+        - task: conf.process.dir
