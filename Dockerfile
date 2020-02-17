@@ -45,3 +45,5 @@ COPY tools /toolbox/tools
 COPY variant-lib /toolbox/variant-lib
 COPY templates /toolbox/templates
 COPY config /toolbox/config
+
+ENTRYPOINT ["/toolbox/tools/toolbox"]
