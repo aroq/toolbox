@@ -8,3 +8,8 @@ config:
       image: aroq/toolbox
       tool_dirs:
         - toolbox/.toolbox/deps/toolbox
+
+tools:
+  toolbox:
+    from: config.tools
+    cmd: toolbox
