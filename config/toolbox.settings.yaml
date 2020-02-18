@@ -6,3 +6,5 @@ config:
   tools:
     params:
       image: aroq/toolbox
+      tool_dirs:
+        - toolbox/.toolbox/deps/toolbox
