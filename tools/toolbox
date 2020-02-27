@@ -3,6 +3,8 @@
 
 description: Toolbox management tasks
 
+bindParamsFromEnv: true
+
 parameters:
 - name: TOOLBOX_DIR
   default: toolbox/.toolbox
