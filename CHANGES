@@ -1,3 +1,7 @@
+Version 0.2.12:
+ - Add toolbox tool
+ - Add tool_dirs param
+
 Version 0.2.11:
  - Update boilerplate to v0.1.8
  - Update init command to use deps install
