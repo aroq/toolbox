@@ -1,15 +1,7 @@
-deps:
-  toolwrap: github.com/aroq/toolwrap?ref=v0.1.8
-  toolbox-variant: github.com/aroq/toolwrap?ref=v0.1.3
-
-config:
-  tools:
-    params:
-      image: aroq/toolbox
-      tool_dirs:
-        - toolbox/.toolbox/deps/toolbox
-
 tools:
   toolbox:
-    from: config.tools
+    from: config.tools.toolbox
     cmd: toolbox
+    image: aroq/toolbox:0.2.13
+    tool_dirs:
+      - /toolbox
