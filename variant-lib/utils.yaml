@@ -5,35 +5,24 @@ tasks:
     - name: exec_dir
       type: string
       default: ""
-    - name: subdir
-      type: string
-      default: ""
     - name: title
       type: string
       default: "Shell command"
     - name: cmd
       type: string
       default: "pwd"
-    - name: mode
-      type: string
-      default: default
     - name: flags
       type: string
       default: ""
-    - name: verbose
-      type: string
-      default: "true"
     steps:
     - script: |
-        if [ "{{ .mode }}" = "default" ]; then
-          CMD={{ list .flags .cmd | join " " | trimSuffix "\n" | trim | quote | replace "\\n" "\n" }}
+        CMD={{ list .flags .cmd | join " " | trimSuffix "\n" | trim | quote | replace "\\n" "\n" }}
 
-          if [ "{{.verbose}}" = "true" ]; then
-            MESSAGE="---> {{ .title }}:"
-            echo -e "\033[0;34m${MESSAGE}\033[0m"
-          fi
-
-          echo -e "\033[0;32m${CMD}\033[0m"
-          set -e;
-          {{list .flags .cmd | join " "}}
+        if [ "${TOOLBOX_LOG_LEVEL}" = "INFO" ] || [ "${TOOLBOX_LOG_LEVEL}" = "DEBUG" ] || [ "${TOOLBOX_LOG_LEVEL}" = "TRACE" ]; then
+          MESSAGE="---> {{ .title }}:"
+          echo -e "\033[0;34m${MESSAGE}\033[0m" 1>&2
+          echo -e "\033[0;32m${CMD}\033[0m" 1>&2
         fi
+
+        set -e;
+        {{list .flags .cmd | join " "}}
