@@ -38,15 +38,16 @@ fi
 export TOOLBOX_TOOL_DOCKER_IMAGE=${TOOLBOX_TOOL_DOCKER_IMAGE:-{{ .task.image }}}
 
 {{ if has .task "run_wrapper_path" -}}
-{{ $run_wrapper_path := .task "run_wrapper_path" }}
-{{ else }}
-{{ $run_wrapper_path := "toolbox/.toolbox/deps/toolbox-variant/run" }}
-{{ end -}}
-
 {{ if has .task "cmd" -}}
-{{ $cmd := .task "cmd" }}
+exec {{ .task.run_wrapper_path }} {{ .task.cmd }} "$@"
 {{ else }}
-{{ $cmd := "" }}
+exec {{ .task.run_wrapper_path }} "$@"
+{{ end -}}
+{{ else }}
+{{ if has .task "cmd" -}}
+exec toolbox/.toolbox/deps/toolbox-variant/run {{ .task.cmd }} "$@"
+{{ else }}
+exec toolbox/.toolbox/deps/toolbox-variant/run "$@"
+{{ end -}}
 {{ end -}}
 
-exec {{ $run_wrapper_path }} {{ $cmd }} "$@"
