@@ -12,6 +12,8 @@ parameters:
   default: toolbox.settings.yaml
 - name: TOOLBOX_EXECUTABLES_DIR
   default: toolbox/bin
+- name: TOOLBOX_TEMPLATE_RUN
+  default: /toolbox/templates/bin/run.tpl
 
 tasks:
   core:
@@ -82,7 +84,7 @@ tasks:
               yq r {{ .TOOLBOX_PROJECT_DIR }}/config/rendered/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | \
                 jq -r '.tools | to_entries | .[] | .key' | \
                 xargs -I "%" \
-                  sh -c "yq r {{ .TOOLBOX_PROJECT_DIR }}/config/rendered/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq '.tools | .[\"%\"]' | gomplate -f /toolbox/templates/bin/run.tpl -o toolbox/.toolbox/.tmp/bin/% --context task=stdin:///foo.yml; chmod a+x toolbox/.toolbox/.tmp/bin/%";
+                  sh -c "yq r {{ .TOOLBOX_PROJECT_DIR }}/config/rendered/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq '.tools | .[\"%\"]' | gomplate -f {{ .TOOLBOX_TEMPLATE_RUN }} -o toolbox/.toolbox/.tmp/bin/% --context task=stdin:///foo.yml; chmod a+x toolbox/.toolbox/.tmp/bin/%";
 
               # Remove tmp dir
               rm -fR .unipipe_temp;
