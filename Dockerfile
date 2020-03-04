@@ -40,9 +40,12 @@ RUN curl --fail -sSL -o fd.tar.gz https://github.com/sharkdp/fd/releases/downloa
     && rm -fR fd-v${FD_VERSION}-x86_64-unknown-linux-musl \
     && chmod +x /usr/local/bin/fd
 
+RUN git clone -b master --depth=1 --single-branch https://github.com/aroq/toolbox-variant.git /toolbox-variant-tmp && \
+    mkdir -p /toolbox-variant/ && \
+    cp -fR /toolbox-variant-tmp/variant-lib /toolbox-variant/
+
 RUN mkdir -p /toolbox
 COPY tools /toolbox/tools
-COPY variant-lib /toolbox/variant-lib
 COPY config /toolbox/config
 
 ENTRYPOINT ["/toolbox/tools/toolbox"]
