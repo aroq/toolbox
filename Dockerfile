@@ -48,4 +48,6 @@ RUN mkdir -p /toolbox
 COPY tools /toolbox/tools
 COPY config /toolbox/config
 
+COPY /scripts/get_env_vars_list.sh /scripts/get_env_vars_list.sh
+
 ENTRYPOINT ["/toolbox/tools/toolbox"]
