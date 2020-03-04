@@ -1,3 +1,13 @@
+Version 0.3.0:
+ - Refactor code
+ - Refactor code
+ - Remove templates
+ - Refactor code
+ - Update run template
+ - Add bindParamsFromEnv: true
+ - Trigger
+ - Update run template
+
 Version 0.2.13:
  - Change exec commands log options
  - Update config
