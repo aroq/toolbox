@@ -7,23 +7,29 @@ bindParamsFromEnv: true
 
 parameters:
 - name: TOOLBOX_DIR
-  default: toolbox/.toolbox
-- name: TOOLBOX_PROJECT_DIR
-  default: toolbox
+  default: "toolbox"
+- name: TOOLBOX_TMP_DIR
+  default: ".tmp"
 - name: TOOLBOX_SETTINGS_FILE_NAME
   default: toolbox.settings.yaml
-- name: TOOLBOX_EXECUTABLES_DIR
+- name: TOOLBOX_BIN_DIR
   default: toolbox/bin
 - name: TOOLBOX_TEMPLATE_RUN
   default: /toolbox/templates/bin/run.tpl
+- name: TOOLBOX_SETTINGS_SOURCE_FILE
+  default: toolbox.settings.yaml
 
 tasks:
   core:
     import: /toolbox/variant-lib/utils.yaml
-  conf:
-    import: /toolbox/variant-lib/utils.config.yaml
 
   deps:
+    bindParamsFromEnv: true
+    parameters:
+    - name: TOOLBOX_DEPS_DIR
+      default: toolbox/deps
+    - name: TOOLBOX_DEPS_FILE
+      default: toolbox.deps.yaml
     tasks:
       install:
         steps:
@@ -31,70 +37,88 @@ tasks:
           arguments:
             title: Install deps
             cmd: |
-              # set -e
-              rm -fR toolbox/.toolbox/.tmp/deps
-
-              # Process config
-              uniconf -c {{ .TOOLBOX_PROJECT_DIR }}/config/source/{{ .TOOLBOX_SETTINGS_FILE_NAME }} 2> /dev/null > {{ .TOOLBOX_PROJECT_DIR }}/config/rendered/{{ .TOOLBOX_SETTINGS_FILE_NAME }};
+              rm -fR {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_TMP_DIR }}/{{ .TOOLBOX_DEPS_DIR }}
 
               mkdir -p ~/.ssh && echo "Host *" > ~/.ssh/config && echo " StrictHostKeyChecking no" >> ~/.ssh/config
 
               # Retrieve deps
-              yq r {{ .TOOLBOX_PROJECT_DIR }}/config/rendered/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq -r '.deps | to_entries | . [] | @text "\(.value) toolbox/.toolbox/.tmp/deps/\(.key)"' | xargs -n2 go-getter;
+              yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_DEPS_FILE }} -j | jq -r '.deps | to_entries | . [] | @text "\(.value) {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_TMP_DIR }}/{{ .TOOLBOX_DEPS_DIR }}/\(.key)"' | xargs -n2 go-getter;
 
               # Update revisions
-              yq r {{ .TOOLBOX_PROJECT_DIR }}/config/rendered/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | \
-              jq -r '.deps | to_entries | . [] | @text "toolbox/.toolbox/.tmp/deps/\(.key)"' | \
+              yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_DEPS_FILE }} -j | \
+              jq -r '.deps | to_entries | . [] | @text "{{ .TOOLBOX_DIR }}/{{ .TOOLBOX_TMP_DIR }}/{{ .TOOLBOX_DEPS_DIR }}/\(.key)"' | \
               xargs -I "%" \
                 sh -c "cd %; [ -d .git ] && (git rev-parse --short HEAD > REVISION; rm -fR .git)" || true;
 
               # Replace old deps
-              rm -fR toolbox/.toolbox/deps
-              cp -fR toolbox/.toolbox/.tmp/deps toolbox/.toolbox
-              rm -fR toolbox/.toolbox/.tmp/deps
+              rm -fR {{ .TOOLBOX_DEPS_DIR }}
+              cp -fR {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_TMP_DIR }}/{{ .TOOLBOX_DEPS_DIR }} {{ .TOOLBOX_DEPS_DIR }}
+              rm -fR {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_TMP_DIR }}
 
       list:
         steps:
         - task: core.exec
           arguments:
             cmd: |
-              uniconf -c {{ .TOOLBOX_PROJECT_DIR }}/config/source/{{ .TOOLBOX_SETTINGS_FILE_NAME }} 2> /dev/null > {{ .TOOLBOX_PROJECT_DIR }}/config/rendered/{{ .TOOLBOX_SETTINGS_FILE_NAME }};
-
               # List tools
-              yq r {{ .TOOLBOX_PROJECT_DIR }}/config/rendered/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq -r '.deps';
+              yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_DEPS_FILE }} -j | jq -r '.deps';
+
+  process:
+    tasks:
+      cmd:
+        tasks:
+          create:
+            steps:
+            - task: config.process.dir
+              arguments:
+                TOOLBOX_CONFIG_SOURCE_DIR: toolbox/config/source
+                TOOLBOX_CONFIG_RENDERED_DIR: toolbox/config/rendered
+            - task: cmd.create
+              arguments:
+                TOOLBOX_SETTINGS_FILE_NAME: config/rendered/toolbox.settings.yaml
 
   cmd:
     tasks:
       create:
         steps:
-        - task: conf.process.dir
-
         - task: core.exec
           arguments:
             cmd: |
               # Remove and recreate bin dir
-              rm -fR toolbox/.toolbox/.tmp/bin;
-              mkdir -p toolbox/.toolbox/.tmp/bin;
+              rm -fR {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_TMP_DIR }}/{{ .TOOLBOX_BIN_DIR }};
+              mkdir -p {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_TMP_DIR }}/{{ .TOOLBOX_BIN_DIR }};
 
               # Create bin dirs hierarchy
-              yq r {{ .TOOLBOX_PROJECT_DIR }}/config/rendered/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | \
+              yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | \
                 jq -r '.tools | to_entries | .[] | select(.key | contains("/")) | .key | capture("(?<dir>.*)\/.*") | .dir' | \
                 xargs -I "%" \
-                  sh -c "mkdir -p toolbox/.toolbox/.tmp/bin/%"
+                  sh -c "mkdir -p {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_TMP_DIR }}/{{ .TOOLBOX_BIN_DIR }}/%"
 
-              # Create "bin/*" tool executable scripts
-              yq r {{ .TOOLBOX_PROJECT_DIR }}/config/rendered/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | \
-                jq -r '.tools | to_entries | .[] | .key' | \
-                xargs -I "%" \
-                  sh -c "yq r {{ .TOOLBOX_PROJECT_DIR }}/config/rendered/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq '.tools | .[\"%\"]' | gomplate -f {{ .TOOLBOX_TEMPLATE_RUN }} -o toolbox/.toolbox/.tmp/bin/% --context task=stdin:///foo.yml; chmod a+x toolbox/.toolbox/.tmp/bin/%";
+              # Create "bin/*" executable wrapper-scripts
+              yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | \
+              jq -r '.tools | to_entries | .[] | @text "\(.key),\(.value.template)"' | \
+              while IFS= read -r item; do
+                IFS=',' read -r -a LINE <<<"$item"
+                KEY="${LINE[0]}"
+                if [[ "${LINE[1]}" == "null" ]]; then
+                  TEMPLATE="{{ .TOOLBOX_TEMPLATE_RUN }}"
+                else
+                  TEMPLATE="${LINE[1]}"
+                fi
 
-              # Remove tmp dir
-              rm -fR .unipipe_temp;
+                yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq --arg key "${KEY}" '.tools | .[$key]' |
+                TASK="name: ${KEY}" \
+                gomplate -f "${TEMPLATE}" \
+                  -o {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_TMP_DIR }}/{{ .TOOLBOX_BIN_DIR }}/${KEY} \
+                  --context task=stdin:///foo.yml \
+                  -d 'task_name=env:///TASK?type=application/yaml'; \
+                chmod a+x {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_TMP_DIR }}/{{ .TOOLBOX_BIN_DIR }}/${KEY};
+              done
 
-              # Replace old deps
-              rm -fR toolbox/bin
-              cp -fR toolbox/.toolbox/.tmp/bin toolbox
-              rm -fR toolbox/.toolbox/.tmp/bin
+              # Replace old bin dir entries
+              rm -fR {{ .TOOLBOX_BIN_DIR }}
+              cp -fR {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_TMP_DIR }}/{{ .TOOLBOX_BIN_DIR }} {{ .TOOLBOX_BIN_DIR }}
+              rm -fR {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_TMP_DIR }}
 
       list:
         steps:
@@ -102,7 +126,7 @@ tasks:
           arguments:
             cmd: |
               # List "bin/*" tool executable scripts
-              yq r {{ .TOOLBOX_PROJECT_DIR }}/config/rendered/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | \
+              yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | \
                 jq -r '.tools'
 
       show:
@@ -114,8 +138,76 @@ tasks:
           arguments:
             cmd: |
               # Show command definition
-              yq r {{ .TOOLBOX_PROJECT_DIR }}/config/rendered/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | \
+              yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | \
                 jq -r '.tools.{{ .tool_name }}'
+
+  config:
+    tasks:
+      process:
+        tasks:
+          file:
+            parameters:
+            - name: TOOLBOX_CONFIG_FILE
+            - name: TOOLBOX_CONFIG_PROCESSED_FILE
+            steps:
+            - task: core.exec
+              arguments:
+                cmd: |
+                  # Process config file
+                  uniconf -c {{ .TOOLBOX_CONFIG_FILE }} > {{ .TOOLBOX_CONFIG_PROCESSED_FILE }} 2> /dev/null;
+            tasks:
+              path:
+                parameters:
+                - name: dir
+                  type: string
+                - name: file
+                  type: string
+                - name: path
+                  type: string
+                steps:
+                - task: core.exec
+                  arguments:
+                    cmd: |
+                      mkdir -p {{ .dir }}
+                      yq r {{ .TOOLBOX_CONFIG_DEFINES_PROCESSED_FILE_PATH }} {{ .path }} > {{ .dir }}/{{ .file }}
+
+          dir:
+            parameters:
+            - name: TOOLBOX_CONFIG_SOURCE_DIR
+            - name: TOOLBOX_CONFIG_RENDERED_DIR
+            steps:
+            - task: core.exec
+              arguments:
+                cmd: |
+                  # Process config
+                  rm -fR {{ .TOOLBOX_CONFIG_RENDERED_DIR }}
+                  mkdir -p {{ .TOOLBOX_CONFIG_RENDERED_DIR }}
+                  fd -0 "^*.y.?ml" {{ .TOOLBOX_CONFIG_SOURCE_DIR }} -x sh -c "uniconf -c {{ .TOOLBOX_CONFIG_SOURCE_DIR }}/{/} > {{ .TOOLBOX_CONFIG_RENDERED_DIR }}/{/} 2> /dev/null";
+
+      render:
+        parameters:
+        - name: TOOLBOX_CONFIG_TEMPLATES_DIR
+        steps:
+        - task: core.exec
+          arguments:
+            cmd: |
+              gomplate -d defines={{ .TOOLBOX_CONFIG_FILE }} \
+              --input-dir={{ .TOOLBOX_CONFIG_TEMPLATES_DIR }} \
+              --output-dir={{ .TOOLBOX_CONFIG_RENDERED_DIR }}
+        tasks:
+          stdin:
+            parameters:
+            - name: json_path
+              type: string
+            steps:
+            - task: core.exec
+              arguments:
+                cmd: |
+                  yq r {{ .TOOLBOX_CONFIG_FILE }} -j | \
+                  jq -r '{{ .json_path }}' | \
+                  gomplate -d defines=stdin:///foo.yaml \
+                    --input-dir={{ .TOOLBOX_CONFIG_TEMPLATES_DIR }} \
+                    --output-dir={{ .TOOLBOX_CONFIG_RENDERED_DIR }}
 
   init:
     parameters:
@@ -144,9 +236,3 @@ tasks:
 
     - task: cmd.create
     - task: deps.install
-
-  config:
-    tasks:
-      process:
-        steps:
-        - task: conf.process.dir
