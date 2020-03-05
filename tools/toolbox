@@ -15,7 +15,6 @@ parameters:
 - name: TOOLBOX_BIN_DIR
   default: toolbox/bin
 - name: TOOLBOX_TEMPLATE_RUN
-  default: /toolbox/templates/bin/run.tpl
 - name: TOOLBOX_SETTINGS_SOURCE_FILE
   default: toolbox.settings.yaml
 
