@@ -1,7 +1,4 @@
 tools:
   toolbox:
-    from: config.tools.toolbox
-    cmd: toolbox
-    image: aroq/toolbox:0.2.13
-    tool_dirs:
-      - /toolbox
+    from: config.toolbox-variant
+    image: aroq/toolbox:dev

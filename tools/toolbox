@@ -14,7 +14,6 @@ parameters:
   default: toolbox.settings.yaml
 - name: TOOLBOX_BIN_DIR
   default: toolbox/bin
-- name: TOOLBOX_TEMPLATE_RUN
 - name: TOOLBOX_SETTINGS_SOURCE_FILE
   default: toolbox.settings.yaml
 
@@ -126,11 +125,7 @@ tasks:
               while IFS= read -r item; do
                 IFS=',' read -r -a LINE <<<"$item"
                 KEY="${LINE[0]}"
-                if [[ "${LINE[1]}" == "null" ]]; then
-                  TEMPLATE="{{ .TOOLBOX_TEMPLATE_RUN }}"
-                else
-                  TEMPLATE="${LINE[1]}"
-                fi
+                TEMPLATE="${LINE[1]}"
 
                 yq r {{ .TOOLBOX_DIR }}/{{ .TOOLBOX_SETTINGS_FILE_NAME }} -j | jq --arg key "${KEY}" '.tools | .[$key]' |
                 TASK="name: ${KEY}" \
@@ -262,3 +257,5 @@ tasks:
 
     - task: cmd.create
     - task: deps.install
+
+
