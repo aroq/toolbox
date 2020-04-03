@@ -1,3 +1,8 @@
+Version 0.3.1:
+ - Update parent image to aroq/toolbox-variant:0.1.41
+ - Update
+ - Set entrypoint to entrypoint.sh
+
 Version 0.3.0:
  - Refactor code
  - Refactor code
