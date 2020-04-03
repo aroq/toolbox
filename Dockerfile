@@ -13,7 +13,7 @@ FROM golang:1-alpine as builder
 COPY Dockerfile.packages.builder.txt /etc/apk/packages.txt
 RUN apk add --no-cache --update $(grep -v '^#' /etc/apk/packages.txt)
 
-FROM aroq/toolbox-variant:0.1.15
+FROM aroq/toolbox-variant:0.1.41
 COPY --from=gomplate /gomplate /usr/bin/
 COPY --from=uniconf /uniconf/uniconf /usr/bin/uniconf
 COPY --from=toolbox /usr/bin/go-getter /usr/bin

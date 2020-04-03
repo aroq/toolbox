@@ -167,6 +167,7 @@ tasks:
       process:
         tasks:
           file:
+            bindParamsFromEnv: true
             parameters:
             - name: TOOLBOX_CONFIG_FILE
             - name: TOOLBOX_CONFIG_PROCESSED_FILE
@@ -193,6 +194,7 @@ tasks:
                       yq r {{ .TOOLBOX_CONFIG_DEFINES_PROCESSED_FILE_PATH }} {{ .path }} > {{ .dir }}/{{ .file }}
 
           dir:
+            bindParamsFromEnv: true
             parameters:
             - name: TOOLBOX_CONFIG_SOURCE_DIR
             - name: TOOLBOX_CONFIG_RENDERED_DIR
@@ -231,11 +233,12 @@ tasks:
                     --output-dir={{ .TOOLBOX_CONFIG_RENDERED_DIR }}
 
   init:
+    bindParamsFromEnv: true
     parameters:
     - name: TOOLBOX_DEPS_DIR
       default: toolbox/.toolbox/deps
     - name: TOOLBOX_BOILERPLATE_ADDRESS
-      default: github.com/aroq/toolbox-boilerplate?ref=v0.1.8
+      default: github.com/aroq/toolbox-boilerplate?ref=v0.1.9
     steps:
     - task: core.exec
       arguments:
@@ -255,7 +258,7 @@ tasks:
             echo 'include toolbox/Makefile' | cat - Makefile > temp && mv temp Makefile
           fi
 
-    - task: cmd.create
     - task: deps.install
+    - task: process.cmd.create
 
 
